@@ -7,6 +7,7 @@ We use OnlineNewsPopularity.csv as our dataset to create a machine learning mode
 ## Dataset
 * __Filename:__ [OnlineNewsPopularity.csv](OnlineNewsPopularity.csv)
 * __Source:__ [Kaggle](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
+* __Dataset Detail:__ [Link](OnlineNewsPopularity.names)
 * __Features:__ 
     * <!-- Things need to be added here -->
     * <!-- Things need to be added here -->
