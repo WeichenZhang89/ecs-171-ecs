@@ -17,11 +17,13 @@ We use OnlineNewsPopularity.csv as our dataset to create a machine learning mode
 ## Data preprocessing
 <!-- Things need to be added here -->
 
+
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
-2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn`
-3. __Run model:__ `python ML_model.ipynb`
-4. <!-- Things need to be added here -->
+2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn (on Terminal)`
+3. __Install libraries:__ `!pip install pandas tensorflow matplotlib seaborn scikit-learn (on colab)`
+4. __Run model:__ `python ML_model.ipynb`
+5. <!-- Things need to be added here -->
 
 ## Result
 <!-- Things need to be added here -->
