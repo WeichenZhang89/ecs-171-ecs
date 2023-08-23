@@ -29,6 +29,13 @@ As for the model, we plan to build a neural network that takes into consideratio
 2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn (on Terminal)`
 3. __Install libraries:__ `!pip install pandas tensorflow matplotlib seaborn scikit-learn (on colab)`
 4. __Run model:__ `python ML_model.ipynb`
+   You might encounter "ImportError : No Moduled Name "tensorflow" when running "import tensorflow as tf". 
+   To solve this, you can uninstall tensorflow:pip uninstall tensorflow and then reinstall it:pip install tensorflow.
+   If you encounter "ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory" 
+   and "HINT: This error might have occurred since this system does not have Windows Long Path support enabled, 
+   you can find information on how to enable this at https://pip.pypa.io/warnings/enable-long-paths", 
+   the most easy way to solve this is going into the registry editor with this directory"Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem", 
+   and thening edit "LongPathsEnabled" to a value of 1. Then it should be done.
 5. <!-- Things need to be added here -->
 
 ## Result
