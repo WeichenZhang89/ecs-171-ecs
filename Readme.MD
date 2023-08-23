@@ -20,6 +20,10 @@ The different features of our data are not scaled, as we can see from running .d
 
 In terms of null values, we found that our data set did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook.
 
+One aspect that needs further consideration when building our model is the mix of continuous and binary values in our feature. For example, the feature 'num_imgs' is a continuous independent variablke specifying how many images there are in an article, but the feature 'data_chanel_is_bus' is a binary variable that can only be 0 or 1. Since we are planning to scale all of our data from 0 to 1, we will need to take this into consideration when building/evaluating our model.
+
+As for the model, we plan to build a neural network that takes into consideration the mix of continuous and logistic dependent variables as features.
+
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
 2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn (on Terminal)`
