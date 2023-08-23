@@ -16,7 +16,9 @@ We use OnlineNewsPopularity.csv as our dataset to create a machine learning mode
 
 ## Data preprocessing
 <!-- Things need to be added here -->
+The different features of our data are not scaled, as we can see from running .describe() on our data. We can also see from our scatterplots that most of our features are not normally distributed, so we will be normalizing our data to scale it from 0 to 1 instead of standardizing. 
 
+In terms of null values, we found that our data set did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook.
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
