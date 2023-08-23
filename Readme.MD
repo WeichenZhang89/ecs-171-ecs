@@ -32,7 +32,7 @@ As for the model, we plan to build a neural network that takes into consideratio
 
    You might encounter "ImportError : No Moduled Name "tensorflow" when running "import tensorflow as tf". 
 
-   To solve this, you can uninstall tensorflow by and then reinstall it by pip uninstall tensorflow + pip install tensorflow in terminal.
+   To solve this, you can uninstall tensorflow and then reinstall it by pip uninstall tensorflow + pip install tensorflow in terminal.
 
    If you encounter "ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory" 
 
