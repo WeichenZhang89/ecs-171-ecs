@@ -18,6 +18,7 @@ The number of shares an online news article gets is of great interest to news si
     * <!-- Things need to be added here -->
 
 ## Data preprocessing
+
 ### Data Imputation
 We found that our data did not have any null values, This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. While we see no need to impute values for now, it may be useful to impute/remove some values that are deemed to be outliers. As we train and evaluate our model, we may revisit data imputation to handle outliers in order to increase the accuracy of our model.
 
