@@ -25,7 +25,7 @@ We found that our data did not have any null values. This can be examined from p
 ### Data Normalization
 From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we will have to normalize our data from 0 to 1 instead of standardizing.
 
-### Extra: Splitting # of shares into different classes
+### Data Encoding
 Rather than predicting the exact number of shares an article will get, we plan to split the number of shares into different classes (Not Interesting, Slightly Interesting, Interestring, Very Interestring, for example). In order to do this, we will have to split the number of shares into different classes and label encode or one-hot encode them.
 
 ## How to use this project
