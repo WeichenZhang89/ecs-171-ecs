@@ -17,10 +17,13 @@ The number of shares an online news article gets is of great interest to news si
     * <!-- Things need to be added here -->
     * <!-- Things need to be added here -->
 
-## Data preprocessing
+## Data Preprocessing
 
 ### Data Imputation
 We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. While we see no need to impute values for now, it may be useful to impute/remove some values that are deemed to be outliers. As we train and evaluate our model, we may revisit data imputation to handle outliers in order to increase the accuracy of our model.
+
+### Dropping Columns
+Since the 'url' column and the 'timedelta' column have no effect on the number of shares, we will be dropping these columns when training our model.
 
 ### Data Normalization
 From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we will have to normalize our data from 0 to 1 instead of standardizing.
