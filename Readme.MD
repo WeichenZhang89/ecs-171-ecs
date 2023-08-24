@@ -1,4 +1,4 @@
-## Online News Popularity Predictor
+# Online News Popularity Predictor
 We use OnlineNewsPopularity.csv as our dataset to create a machine learning model to predict popularity of online news articles.
 
 ## Goals
@@ -18,14 +18,14 @@ The number of shares an online news article gets is of great interest to news si
     * <!-- Things need to be added here -->
 
 ## Data preprocessing
-# Data Imputation
-The different features of our data are not scaled, as we can see from running .describe() on our data. We can also see from our scatterplots that most of our features are not normally distributed, so we will be normalizing our data to scale it from 0 to 1 instead of standardizing. 
+### Data Imputation
+We found that our data did not have any null values, This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. While we see no need to impute values for now, it may be useful to impute/remove some values that are deemed to be outliers. As we train and evaluate our model, we may revisit data imputation to handle outliers in order to increase the accuracy of our model.
 
-In terms of null values, we found that our data set did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook.
+### Data Normalization
+From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we will have to normalize our data from 0 to 1 instead of standardizing.
 
-One aspect that needs further consideration when building our model is the mix of continuous and binary values in our feature. For example, the feature 'num_imgs' is a continuous independent variablke specifying how many images there are in an article, but the feature 'data_chanel_is_bus' is a binary variable that can only be 0 or 1. Since we are planning to scale all of our data from 0 to 1, we will need to take this into consideration when building/evaluating our model.
-
-As for the model, we plan to build a neural network that takes into consideration the mix of continuous and logistic dependent variables as features.
+### Extra: Splitting # of shares into different classes
+Rather than predicting the exact number of shares an article will get, we plan to split the number of shares into different classes (Not Interesting, Slightly Interesting, Interestring, Very Interestring, for example). In order to do this, we will have to split the number of shares into different classes and label encode or one-hot encode them.
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
