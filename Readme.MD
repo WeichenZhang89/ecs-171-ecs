@@ -26,6 +26,8 @@ From our data distributions in our notebook, we see that only a few of our featu
 ### Data Encoding
 Rather than predicting the exact number of shares an article will get, we plan to split the number of shares into different classes (Not Interesting, Slightly Interesting, Interestring, Very Interestring, for example). In order to do this, we will have to split the number of shares into different classes and label encode or one-hot encode them.
 
+Alternatively, we could have our model predict the exact number of shares, and then convert those predictions into classes after the prediction.
+
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
 2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn (on Terminal)`
