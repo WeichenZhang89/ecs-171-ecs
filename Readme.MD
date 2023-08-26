@@ -28,9 +28,6 @@ Rather than predicting the exact number of shares an article will get, we plan t
 
 Alternatively, we could have our model predict the exact number of shares, and then convert those predictions into classes after the prediction.
 
-### Data Distribution
-Some of the columns (' n_non_stop_words', ' num_imgs', ' num_videos', ' kw_min_min', ' kw_max_min', ' kw_min_max', ' kw_max_max', ' self_reference_min_shares', ' self_reference_max_shares') have a wide range of values even though the majority of the values fall within a small range. As a result these highly skewed outliers have dominated the visualization of their respective histograms. For the next milestone where we preprocess the data, we could plot the histograms for just a subset of the data by removing the outliers (e.g plotting just the data between the 1st and 99th percentiles) to get a better understanding of the data distribution for these columns.
-
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
 2. __Install libraries:__ `pip install pandas tensorflow matplotlib seaborn scikit-learn (on Terminal)`
