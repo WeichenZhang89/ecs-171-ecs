@@ -50,7 +50,7 @@ Our model then takes account of the predictions made by different models, and ta
 
 The model complexity of our ensemble model can be defined by the complexity of the models the ensemble is made of. For instance, an ensemble model that considers predictions from only linear regression models would be considered simple, while an ensemble consisting of neural network models and a random forest model more complex.
 
-Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We decided that considering the SVM's predictions in our ensemble could be harmful, and removed the SVM from the models we would be using.
+Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). In future testing, we may exclude the SVM from our ensemble model to increase the accuracy.
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
