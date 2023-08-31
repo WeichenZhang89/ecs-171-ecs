@@ -27,10 +27,11 @@ From our data distributions in our notebook, we see that only a few of our featu
 
 ### Data Encoding
 Rather than predicting the exact number of shares an article will get, we split the number of shares into different classes as such:
-    Great Article: Shares >= 90%
-    Good Article: 70% <= Shares < 90%
-    Normal Article: 30% <= Shares < 70%
-    Bad article: Shares < 30%
+
+    - Great Article: Shares >= 90%
+    - Good Article: 70% <= Shares < 90%
+    - Normal Article: 30% <= Shares < 70%
+    - Bad article: Shares < 30%
 For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article".
 We used one-hot encoding to encode the continuous share values into binary values.
 
