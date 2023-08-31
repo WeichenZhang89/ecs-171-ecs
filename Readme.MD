@@ -32,6 +32,7 @@ Rather than predicting the exact number of shares an article will get, we split 
     * Good Article: 70% <= Shares < 90%
     * Normal Article: 30% <= Shares < 70%
     * Bad article: Shares < 30%
+
 For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article".
 We used one-hot encoding to encode the continuous share values into binary values.
 
@@ -39,6 +40,7 @@ We used one-hot encoding to encode the continuous share values into binary value
 Since simple regression models have already been done by other people on this data set, we set out to develop an ensemble model that takes different predictions from multiple machine learning models before making its decision. 
 
 The models we used for building the ensemble model were:
+
     * A simple linear regression model
     * A neural network model
     * A model utilizing Random Forest
