@@ -77,4 +77,4 @@ Note: During testing, we found that the SVM model did not perform well (around 4
 <!-- Things need to be added here -->
 
 ## Link to Jupyter Notebook
-[Jupyter Notebook](ML_model.ipynb)
+[Jupyter Notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb)
