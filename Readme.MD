@@ -1,5 +1,4 @@
 # Online News Popularity Predictor
-We use OnlineNewsPopularity.csv as our dataset to create a machine learning model to predict popularity of online news articles.
 
 ## Goals
 The number of shares an online news article gets is of great interest to news sites and advertisers alike since it serves as a good estimator of how many people an article will reach. Our data set includes various attributes that can potentially influence the number of shares, such as the number of links, pictures, and videos the article has; which day of the week the article was released, what category the article belongs to (business, entertainment, tech, etc), the number of positive or negative words, among many others. Applying the right machine learning model, we will be able to accurately predict how popular an article will be, allowing authors, news outlets (and even you!) to make relevant changes to increase engagement from readers before release.
@@ -15,18 +14,25 @@ The number of shares an online news article gets is of great interest to news si
 ## Data Preprocessing
 
 ### Data Imputation
-We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. While we see no need to impute values for now, it may be useful to impute/remove some values that are deemed to be outliers. As we train and evaluate our model, we may revisit data imputation to handle outliers in order to increase the accuracy of our model.
+We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. 
+
+Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. We used an isolation forest model to remove these outliers.
+More information on isolation forest [here][https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest]
 
 ### Dropping Columns
-Since the 'url' column and the 'timedelta' column have no effect on the number of shares, we will be dropping these columns when training our model.
+Since the 'url' column and the 'timedelta' column have no effect on the number of shares, we dropped these columns when developing our model.
 
 ### Data Normalization
-From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we will have to normalize our data from 0 to 1 instead of standardizing.
+From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we rescaled our data using MinMaxScaler() so that our values are between 0 and 1.
 
 ### Data Encoding
-Rather than predicting the exact number of shares an article will get, we plan to split the number of shares into different classes (Not Interesting, Slightly Interesting, Interestring, Very Interestring, for example). In order to do this, we will have to split the number of shares into different classes and label encode or one-hot encode them.
-
-Alternatively, we could have our model predict the exact number of shares, and then convert those predictions into classes after the prediction.
+Rather than predicting the exact number of shares an article will get, we split the number of shares into different classes as such:
+    Great Article: Shares >= 90%
+    Good Article: 70% <= Shares < 90%
+    Normal Article: 30% <= Shares < 70%
+    Bad article: Shares < 30%
+For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article".
+We used one-hot encoding to encode the continuous share values into binary values.
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
