@@ -50,7 +50,30 @@ Our model then takes account of the predictions made by different models, and ta
 
 The model complexity of our ensemble model can be defined by the complexity of the models the ensemble is made of. For instance, an ensemble model that considers predictions from only linear regression models would be considered simple, while an ensemble consisting of neural network models and a random forest model more complex.
 
-Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). In future testing, we may exclude the SVM from our ensemble model to increase the accuracy.
+Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
+
+## Our Models & Test for Overfitting
+We tested three ensemble models. Ordered in increasing complexity, they were:
+
+   * Model 1: Ensemble of 3 linear regression models (With ridge cost function)
+   * Model 2: Ensemble of 1 linear regression model + 2 neural network models
+   * model 3: Ensemble of 2 neural network models + 1 Random Forest model
+
+The train/test accuracy for our models were as follows:
+
+Model 1:
+   Training Accuracy: 0.4412
+   Testing Accuracy: 0.4168
+
+Model 2:
+   Training Accuracy: 0.4625
+   Testing Accuracy: 0.4256
+
+Model 3:
+   Training Accuracy: 0.8583
+   Testing Accuracy: 0.4320
+
+While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere inbetween Model 2 and Model 3.
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
