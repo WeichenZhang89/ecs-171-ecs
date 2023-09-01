@@ -62,16 +62,16 @@ We tested three ensemble models. Ordered in increasing complexity, they were:
 The train/test accuracy for our models were as follows:
 
 Model 1:
-   Training Accuracy: 0.4412
-   Testing Accuracy: 0.4168
+   * Training Accuracy: 0.4412
+   * Testing Accuracy: 0.4168
 
 Model 2:
-   Training Accuracy: 0.4625
-   Testing Accuracy: 0.4256
+   * Training Accuracy: 0.4625
+   * Testing Accuracy: 0.4256
 
 Model 3:
-   Training Accuracy: 0.8583
-   Testing Accuracy: 0.4320
+   * Training Accuracy: 0.8583
+   * Testing Accuracy: 0.4320
 
 While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere inbetween Model 2 and Model 3.
 
