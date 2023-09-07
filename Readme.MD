@@ -1,20 +1,23 @@
 # Online News Popularity Predictor
-[Link to data set](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
-
 ## Dataset
 * __Filename:__ [OnlineNewsPopularity.csv](OnlineNewsPopularity.csv)
 * __Source:__ [Kaggle](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
 * __Dataset Detail:__ [Link](OnlineNewsPopularity.names)
 
 ## Introduction
-The number of shares an online news article gets is of great interest to news sites and advertisers alike since it serves as a good estimator of how many people an article will reach. Our data set includes various attributes that can potentially influence the number of shares, such as the number of links, pictures, and videos the article has; which day of the week the article was released, what category the article belongs to (business, entertainment, tech, etc), the number of positive or negative words, among many others. Applying the right machine learning model, we will be able to predict how popular an article will be. With accurate predictions, authors and news outlets will be able to make relevant changes to increase engagement from readers before release.
+The number of shares an online news article gets is of great interest to news sites and advertisers alike since it serves as a good estimator of how many people an article will reach. Our data set includes various attributes that can potentially influence the number of shares, such as the number of links, pictures, and videos the article has; which day of the week the article was released, what category the article belongs to (business, entertainment, tech, etc), the number of positive or negative words, among many others. Applying the right machine learning model, we will be able to predict how popular an article will be. With accurate predictions, authors and news outlets will be able to make relevant changes to increase engagement from readers before release. 
 
 ### Previous work
+Most of the work on Kaggle employed a regression algorithm to fit the number of shares (target) using the various features of the data set. We saw few that used an SVM to predict the target, and one that used the a Random Forest. To differentiate ourselves from the work that has already been done, we combined the many methods we learned this quarter (linear regression, neural nets, SVM, Random Forest) to create a new ensemble model. 
 
+## Methods
+### Data Exploration
+[Link to Data Exploration Notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
+TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
+TODO: Include the scatterplots and the histograms and explain what we see.
 
-## Data Preprocessing
-
-### Data Imputation
+### Data Preprocessing
+#### Data Imputation
 We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. 
 
 Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. We used an isolation forest model to remove these outliers.
