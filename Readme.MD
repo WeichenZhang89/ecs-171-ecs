@@ -16,10 +16,13 @@ Most of the work on Kaggle employed a regression algorithm to fit the number of 
 [Link to data exploration notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
 
 TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
+
 TODO: Include the scatterplots and the histograms and explain what we see.
+
 
 ### Data Preprocessing
 [Link to preprocessing & first model notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb)
+
 
 #### Checking for null values
 We run
@@ -28,6 +31,7 @@ null_data_count = data.isnull().sum().sum()
 print (f"There are total of {null_data_count} missing data")
 ```
 To check if there are any null values in our data and see that there are none.
+
 
 #### Data Normalization
 We normalize our data using MinMaxScaler:
