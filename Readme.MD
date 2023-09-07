@@ -13,12 +13,78 @@ Most of the work on Kaggle employed a regression algorithm to fit the number of 
 
 ## Methods
 ### Data Exploration
-[Link to Data Exploration Notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
+[Link to data exploration notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
 
 TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
 TODO: Include the scatterplots and the histograms and explain what we see.
 
 ### Data Preprocessing
+[Link to preprocessing & first model notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb)
+
+#### Checking for null values
+We run
+```
+null_data_count = data.isnull().sum().sum()
+print (f"There are total of {null_data_count} missing data")
+```
+To check if there are any null values in our data and see that there are none.
+
+#### Data Normalization
+We normalize our data using MinMaxScaler:
+```
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+
+scaler = MinMaxScaler()
+scaled_X = scaler.fit_transform(x)
+```
+
+#### Data Encoding
+We change our number of shares (continuous value) to categorical variables. The following function is defined for transforming our continuous values.
+```
+def article_classifier(shares, top_percent):
+    if shares >= top_percent[0.9]:
+        return 'Great'
+    elif shares >= top_percent[0.7]:
+        return 'Good'
+    elif shares >= top_percent[0.3]:
+        return 'Normal'
+    else:
+        return 'Bad'
+```
+
+We then apply this function to our data by:
+```
+top_percent = new_data['shares'].quantile([0.3, 0.7, 0.9])
+
+quality = []
+for index, row in new_data.iterrows():
+    quality.append(article_classifier(row['shares'], top_percent))
+
+new_data['quality'] = quality
+```
+
+### Model 1
+TODO: Like the preprocessing section, simply elaborate what was done (what code was run, etc). In developing our first model. No explanations, just what we did
+
+
+### Model 2
+TODO: Same thing, but explain it for our second model
+
+## Results
+TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
+TODO: Accuracy & Overfitting graph for model 1.
+TODO: Accuracy & Overfitting graph for model 2.
+Note: Just reporting the results will be good enough. I think the analysis is supposed to be done in the Discussion section.
+
+## Discussion
+TODO: Repeat the Methods & Results section, but explain the reasoning behind each section. 
+TODO: Explore results of our first model, do overfitting analysis
+TODO: Explain how second model differs, 
+TODO: Explore second model results, do overfitting analysis.
+TODO: Summarize final results of model 2 (accuracy, etc).
+
+Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
 #### Data Imputation
 We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. 
 
@@ -99,8 +165,9 @@ While accuracy improves slightly as model complexity increases, we see that the 
 
    and thening edit "LongPathsEnabled" to a value of 1. Then it should be done.
 
-## Result
-<!-- Things need to be added here -->
+## Conclusion
+TODO: What do we think of our model? What can we do better?
+TODO: Could be good to include Kenny's vision for using the model along with an article scraper for future work.
 
 ## Contributions
 <!-- Things need to be added here -->
