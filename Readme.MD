@@ -121,7 +121,7 @@ Rather than predicting the exact number of shares an article will get, we split 
 For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article".
 We used one-hot encoding to encode the continuous share values into binary values.
 
-## Our Model:
+## Model 1:
 Since simple regression models have already been done by other people on this data set, we set out to develop an ensemble model that takes different predictions from multiple machine learning models before making its decision. 
 
 The models we used for building the ensemble model were:
@@ -137,7 +137,7 @@ The model complexity of our ensemble model can be defined by the complexity of t
 
 Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
 
-## Our Models & Test for Overfitting
+## Model 1 & Test for Overfitting
 We tested three ensemble models. Ordered in increasing complexity, they were:
 
    * Model 1: Ensemble of 3 linear regression models (With ridge cost function)
