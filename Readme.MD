@@ -77,23 +77,32 @@ TODO: Same thing, but explain it for our second model
 
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
+
 TODO: Accuracy & Overfitting graph for model 1.
+
 TODO: Accuracy & Overfitting graph for model 2.
+
 Note: Just reporting the results will be good enough. I think the analysis is supposed to be done in the Discussion section.
+
 
 ## Discussion
 TODO: Repeat the Methods & Results section, but explain the reasoning behind each section. 
+
 TODO: Explore results of our first model, do overfitting analysis
-TODO: Explain how second model differs, 
+
+TODO: Explain how second model differs.
+
 TODO: Explore second model results, do overfitting analysis.
+
 TODO: Summarize final results of model 2 (accuracy, etc).
+
 
 Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
 #### Data Imputation
 We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. 
 
 Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. We used an isolation forest model to remove these outliers.
-More information on isolation forest [here][https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest]
+More information on isolation forest [here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest)
 
 ### Dropping Columns
 Since the 'url' column and the 'timedelta' column have no effect on the number of shares, we dropped these columns when developing our model.
