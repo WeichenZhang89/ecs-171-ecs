@@ -1,15 +1,16 @@
 # Online News Popularity Predictor
-
-## Goals
-The number of shares an online news article gets is of great interest to news sites and advertisers alike since it serves as a good estimator of how many people an article will reach. Our data set includes various attributes that can potentially influence the number of shares, such as the number of links, pictures, and videos the article has; which day of the week the article was released, what category the article belongs to (business, entertainment, tech, etc), the number of positive or negative words, among many others. Applying the right machine learning model, we will be able to accurately predict how popular an article will be, allowing authors, news outlets (and even you!) to make relevant changes to increase engagement from readers before release.
-
-## Project Overview
-<!-- Things need to be added here -->
+[Link to data set](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
 
 ## Dataset
 * __Filename:__ [OnlineNewsPopularity.csv](OnlineNewsPopularity.csv)
 * __Source:__ [Kaggle](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
 * __Dataset Detail:__ [Link](OnlineNewsPopularity.names)
+
+## Introduction
+The number of shares an online news article gets is of great interest to news sites and advertisers alike since it serves as a good estimator of how many people an article will reach. Our data set includes various attributes that can potentially influence the number of shares, such as the number of links, pictures, and videos the article has; which day of the week the article was released, what category the article belongs to (business, entertainment, tech, etc), the number of positive or negative words, among many others. Applying the right machine learning model, we will be able to predict how popular an article will be. With accurate predictions, authors and news outlets will be able to make relevant changes to increase engagement from readers before release.
+
+### Previous work
+
 
 ## Data Preprocessing
 
