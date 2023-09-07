@@ -14,6 +14,7 @@ Most of the work on Kaggle employed a regression algorithm to fit the number of 
 ## Methods
 ### Data Exploration
 [Link to Data Exploration Notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
+
 TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
 TODO: Include the scatterplots and the histograms and explain what we see.
 
