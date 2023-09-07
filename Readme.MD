@@ -180,6 +180,7 @@ While accuracy improves slightly as model complexity increases, we see that the 
 
 ## Conclusion
 TODO: What do we think of our model? What can we do better?
+
 TODO: Could be good to include Kenny's vision for using the model along with an article scraper for future work.
 
 ## Contributions
