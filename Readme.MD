@@ -154,7 +154,7 @@ The model complexity of our ensemble model can be defined by the complexity of t
 
 Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
 
-## Model 1 & Test for Overfitting
+#### Test for overfitting (original model)
 We tested three ensemble models. Ordered in increasing complexity, they were:
 
    * Model 1: Ensemble of 3 linear regression models (With ridge cost function)
@@ -176,6 +176,9 @@ Model 3:
    * Testing Accuracy: 0.4561
 
 While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere inbetween Model 2 and Model 3.
+
+### Developing our improved model
+TODO: Write the reasoning behind the improved model
 
 ## How to use this project
 1. __Clone the repo:__ `git clone https://github.com/WeichenZhang89/ecs-171-ecs`
