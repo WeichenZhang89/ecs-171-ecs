@@ -21,7 +21,7 @@
 
    the most easy way to solve this is going into the registry editor with this directory "Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem", 
 
-   and thening edit "LongPathsEnabled" to a value of 1. Then it should be done.
+   and then edit "LongPathsEnabled" to a value of 1. Then it should be done.
 
 
 ## Introduction
