@@ -68,7 +68,7 @@ def article_classifier(shares, top_percent):
         return 'Bad'
 ```
 
-We then apply this function to our data by:
+We then apply this function to our data with:
 ```
 top_percent = new_data['shares'].quantile([0.3, 0.7, 0.9])
 
