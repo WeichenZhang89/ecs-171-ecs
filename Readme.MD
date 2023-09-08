@@ -109,30 +109,36 @@ TODO: Summarize final results of model 2 (accuracy, etc).
 
 
 Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
+### Data Preprocessing
 #### Data Imputation
-We found that our data did not have any null values. This can be examined from printing the results of .isnull().sum() (sums up the count of how many null values there are per column) and the heatmap generated in the notebook. 
+From the result of 
 
-Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. We used an isolation forest model to remove these outliers.
-More information on isolation forest [here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest)
+```
+null_data_count = data.isnull().sum().sum()
+print (f"There are total of {null_data_count} missing data")
+```
 
-### Dropping Columns
-Since the 'url' column and the 'timedelta' column have no effect on the number of shares, we dropped these columns when developing our model.
+We found that our data did not have any null values. Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. To address these outliers, we used an isolation forest model to remove the outliers. More information on the isolation forest model can be found here.
 
-### Data Normalization
-From our data distributions in our notebook, we see that only a few of our features (global_subjectivity, avg_positive_polarity) seem to be normally distributed. We also see from .describe() on our data set that our values are not scaled. Since only a few of our features are normally distributed, we rescaled our data using MinMaxScaler() so that our values are between 0 and 1.
+#### Dropping features
+The ‘url’ column contains the url for each article in our observations. The ‘timedelta’ column indicates days between the article publication and the dataset acquisition. Since these two features will have no effect on how many shares an article will get, we excluded these variables when training our model.
 
-### Data Encoding
-Rather than predicting the exact number of shares an article will get, we split the number of shares into different classes as such:
+#### Data normalization
+During the data exploration phase, we saw from our scatterplots that only a few of our features (global_subjectivity and avg_positive_polarity) for example, seemed to be normally distributed. Since only a few of our features were normally distributed, we rescaled our data using MinMaxScaler() so that our feature values were between 0 and 1.
 
-    * Great Article: Shares >= 90%
-    * Good Article: 70% <= Shares < 90%
-    * Normal Article: 30% <= Shares < 70%
-    * Bad article: Shares < 30%
+#### Data encoding
+Rather than having our model be a regression model that predicts a continuous value, we decided to make it a classifier instead. This made more sense to us because predicting the exact number of shares an article will get is not as important or as useful as knowing how “interesting” an article would be. For instance, it is not important that an article will be predicted to get exactly 200 shares but rather that it would belong to a class of being an interesting article. 
 
-For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article".
-We used one-hot encoding to encode the continuous share values into binary values.
+In order to accomplish this, we split the number of shares (a continuous value) into different classes as such:
 
-## Model 1:
+* Great Article: Shares >= 90%
+* Good Article: 70% <= Shares < 90%
+* Normal Article: 30% <= Shares < 70%
+* Bad article: Shares < 30%
+
+Where positive words such as “Great” and “Good” denote that it will get many shares and negative words denote that it will get few. For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article". We used one-hot encoding mentioned in the methods sections to encode the continuous values into binary values.
+
+### Developing our original model
 Since simple regression models have already been done by other people on this data set, we set out to develop an ensemble model that takes different predictions from multiple machine learning models before making its decision. 
 
 The models we used for building the ensemble model were:
