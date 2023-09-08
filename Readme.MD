@@ -32,6 +32,17 @@ print (f"There are total of {null_data_count} missing data")
 ```
 To check if there are any null values in our data and see that there are none.
 
+#### Removing outliers
+We use an isolation forest model to remove outliers with the following code:
+```
+IF_model = IsolationForest(contamination=0.1) # Remove 10% data
+outliers = IF_model.fit_predict(data.drop(columns=['url', 'timedelta', 'shares'])) # Delete columns than don't need in IF and train IF model
+data['outliers'] = outliers
+
+# Remove outliers
+data_outliers = data[data['outliers'] == -1]
+new_data = data[data['outliers'] != -1].drop(columns = ['outliers'])
+```
 
 #### Data Normalization
 We normalize our data using MinMaxScaler:
