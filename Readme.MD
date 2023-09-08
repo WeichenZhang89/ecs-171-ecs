@@ -79,11 +79,11 @@ for index, row in new_data.iterrows():
 new_data['quality'] = quality
 ```
 
-### Model 1
+### Original model
 TODO: Like the preprocessing section, simply elaborate what was done (what code was run, etc). In developing our first model. No explanations, just what we did
 
 
-### Model 2
+### Improved model
 TODO: Same thing, but explain it for our second model
 
 ## Results
