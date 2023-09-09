@@ -37,6 +37,30 @@ Most of the work on Kaggle employed a regression algorithm to fit the number of 
 
 TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
 
+#### 1. Reading the CSV file
+- The data was loaded from the OnlineNewsPopularity.csv file into a Pandas DataFrame
+```
+data = pd.read_csv('OnlineNewsPopularity.csv')
+data.columns = [col.strip() for col in data.columns]
+```
+
+#### 2. Observations and Features
+- Determined the total number of observations (rows) and features (columns).
+```
+# Total rows
+print(f"Total number of observations: {data.shape[0]}\n")
+# Total columns
+print(f"Total number of columns: {data.shape[1]}\n")
+```
+
+#### 3.Descriptive Statistics
+- Displayed the descriptive statistics for each column.
+```
+pd.set_option('display.max_columns', None)
+data.describe()
+```
+
+
 TODO: Include the scatterplots and the histograms and explain what we see.
 
 
