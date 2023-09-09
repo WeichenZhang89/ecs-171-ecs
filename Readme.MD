@@ -35,8 +35,6 @@ Most of the work on Kaggle employed a regression algorithm to fit the number of 
 ### Data Exploration
 [Link to data exploration notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb)
 
-TODO: Explain what we see in the data. Comment on the normality of the data (how not ll of them are normally distributed, and how we will be normalizing instead of standardizing)
-
 #### 1. Reading the CSV file
 - The data was loaded from the OnlineNewsPopularity.csv file into a Pandas DataFrame
 ```
@@ -60,6 +58,103 @@ pd.set_option('display.max_columns', None)
 data.describe()
 ```
 
+#### 4.Checking Missing Values
+- Checked the dataset for missing values
+```
+null_data_count = data.isnull().sum().sum()
+print (f"There are total of {null_data_count} missing data")
+```
+
+#### 5. Scatter Plots for Features vs. Shares
+Created scatter plots for each feature against the 'shares' column.
+```
+fig = plt.figure(figsize=(50, 50))
+
+# Remove all data can not be plotted
+plot_columns = []
+for column in columns:
+    if column not in ['url', 'timedelta', 'shares']:
+        plot_columns.append(column)
+
+plt_cols = 6
+plt_rows = len(plot_columns) // plt_cols + 1
+
+fig, axes = plt.subplots(nrows=plt_rows, ncols=plt_cols, figsize=(50, 5*plt_rows))
+
+for i, col in enumerate(plot_columns):
+    ax = axes[i // plt_cols, i % plt_cols]
+    ax.scatter(data[col], data['shares'])
+    ax.set_xlabel(col)
+    ax.set_ylabel('shares')
+    ax.set_title(f'{col} vs shares')
+
+plt.tight_layout()
+plt.show()
+```
+
+#### 6. Distribution of Continuous Features
+- Visualized the distribution of continuous features using histograms.
+```
+# List of categorical columns provided by the dataset
+categorical_cols = [
+    'data_channel_is_lifestyle', 'data_channel_is_entertainment',
+    'data_channel_is_bus', 'data_channel_is_socmed', 'data_channel_is_tech',
+    'data_channel_is_world', 'weekday_is_monday', 'weekday_is_tuesday',
+    'weekday_is_wednesday', 'weekday_is_thursday', 'weekday_is_friday',
+    'weekday_is_saturday', 'weekday_is_sunday', 'is_weekend', 'url',
+    'timedelta'
+]
+extra_drop = [
+    "n_unique_tokens", "n_non_stop_words","n_non_stop_unique_tokens"
+]
+# Remove discrete columns from being plotted
+continuous_data = data.drop(columns=categorical_cols+extra_drop)
+
+fig, axes = plt.subplots(nrows=len(continuous_data.columns) // 2 + len(continuous_data.columns) % 2, ncols=2, figsize=(15, 80))
+
+for ax, column in zip(axes.flatten(), continuous_data.columns):
+    continuous_data[column].hist(ax=ax, bins=50, grid=False)
+    ax.set_title(column)
+    ax.set_xlabel('Values')
+    ax.set_ylabel('Frequency')
+    ax.set_yscale('log')
+# Hide any unused subplots
+for i in range(len(continuous_data.columns), len(axes.flatten())):
+    axes.flatten()[i].axis('off')
+
+plt.tight_layout()
+plt.show()
+```
+
+#### 7. Distribution of One-Hot Encoded Categorical Features
+- Plotted histograms for one-hot encoded categorical features.
+```
+#Related one-hot encoded columns histograms
+
+data_channel_cols = [col for col in data.columns if col.strip().startswith('data_channel_is_')]
+weekday_cols = [col for col in data.columns if col.strip().startswith('weekday_is_')]
+
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(15, 12))
+
+# Plotting for data_channel columns
+data[data_channel_cols].sum().plot(kind='bar', ax=axes[0], color='blue')
+axes[0].set_title('Data Channel Distribution')
+axes[0].set_xlabel('Data Channels')
+axes[0].set_ylabel('Frequency')
+axes[0].tick_params(axis='x', rotation=45)  # Tilting x axis labels
+axes[0].set_yscale('log')
+
+# Plotting for weekday columns
+data[weekday_cols].sum().plot(kind='bar', ax=axes[1], color='green')
+axes[1].set_title('Weekday Distribution')
+axes[1].set_xlabel('Weekdays')
+axes[1].set_ylabel('Frequency')
+axes[1].tick_params(axis='x', rotation=45)  # Tilting x axis labels
+axes[1].set_yscale('log')
+
+plt.tight_layout()
+plt.show()
+```
 
 TODO: Include the scatterplots and the histograms and explain what we see.
 
