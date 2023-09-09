@@ -163,10 +163,10 @@ Since simple regression models have already been done by other people on this da
 
 The models we used for building the ensemble model were:
 
-    * A simple linear regression model
-    * A neural network model
-    * A model utilizing Random Forest
-    * A SVM model
+* A simple linear regression model
+* A neural network model
+* A model utilizing Random Forest
+* A SVM model
 
 Our model then takes account of the predictions made by different models, and takes the mode (or mean) as the prediction value.
 
