@@ -66,7 +66,7 @@ print (f"There are total of {null_data_count} missing data")
 ```
 
 #### 5. Scatter Plots for Features vs. Shares
-Created scatter plots for each feature against the 'shares' column.
+- Created scatter plots for each feature against the 'shares' column.
 ```
 fig = plt.figure(figsize=(50, 50))
 
@@ -156,7 +156,6 @@ plt.tight_layout()
 plt.show()
 ```
 
-TODO: Include the scatterplots and the histograms and explain what we see.
 
 
 ### Data Preprocessing
