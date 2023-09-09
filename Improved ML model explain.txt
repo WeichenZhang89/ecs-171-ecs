@@ -1,0 +1,54 @@
+1.  Data preprocessing part: same as milestone
+2.  Train test split part: Change to label encoder, rest are same as last milestone
+
+3.  Model:
+        3.1 There are three models in ensembled model(two different NN + 1 RF)
+        3.2 I first build and train these three different models, then ensemble them
+        3.3 First NN:
+            3.3.1 Layers:
+                512 nodes, relu(input layer)
+                128 nodes, relu
+                64 nodes, relu
+                4 nodes, softmax(output layer)
+            3.3.2 Fit:
+                epoch = 100
+                batch size = 32
+                loss = sparse categorical crossentropy
+            3.3.3 Result:
+                Train accuracy = 0.687
+                Test accuracy = 0.687
+                Other results please check .ipynb file
+        3.4 Second NN:
+            3.4.1 Layers:
+                512 nodes, tanh(input layer)
+                256 nodes, tanh
+                128 nodes, tanh
+                64 nodes, tanh
+                4 nodes, softmax(output layer)               
+            3.4.2 Fit:
+                epoch = 100
+                batch size = 32
+                loss = sparse categorical crossentropy
+            3.4.3 Result:
+                Train accuracy = 0.653
+                Test accuracy = 0.643
+                Other results please check .ipynb file
+        3.5 RF:
+            3.5.1 Parameters:
+                n estimators = 1000
+            3.5.2 Result:
+                Train accuracy: 0.830
+                Test accuracy: 0.834
+                Other results please check .ipynb file
+        3.6 Ensembled Model: Instead taking mean of these three models,
+            I use each model's test accuracy on different classes as their weight.
+            For example, since I label encoded the column that the model is going to predict into 0, 1, 2, 3,
+            let's say RF model has following accuracy 0: 0.78, 1:0.78, 2:0.84, 3:0.76
+            and RF predict a certin value as 2, we will not use this directly, instead,
+            this number will be weighted by RF model's accuracy on this class(in this case is 2),
+            which the result will be 0.84
+
+4. How to run it: If you want to build the model again please run all the model training code(it will take a long time),
+                  if not please just run analysis part, nn1.h5 and nn2.h5 are all uploaded to GitHub, but RF model is
+                  too big and cant upload to GitHub, I will post it on Discord, just download it and put it in the same folder
+                  as other two models
