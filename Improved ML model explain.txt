@@ -49,6 +49,6 @@
             which the result will be 0.84
 
 4. How to run it: If you want to build the model again please run all the model training code(it will take a long time),
-                  if not please just run analysis part, nn1.h5 and nn2.h5 are all uploaded to GitHub, but RF model is
+                  if dont please just run analysis part, nn1.h5 and nn2.h5 are all uploaded to GitHub, but RF model is
                   too big and cant upload to GitHub, I will post a link to GoogleDrive on Discord, just download it and put it in the same folder
                   as other two models
