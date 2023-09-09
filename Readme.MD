@@ -282,9 +282,11 @@ Note: The following was preserved from our original milestone submissions. I thi
 - Histograms offer a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
 
 <details>
-  <summary>Click to view the Histograms (continous columns)</summary>
+  <summary>Click to view the Histogram Plots</summary>
 
-![Histograms for continous columns](histogram_plot.png)
+![Histogram plots](Histograms.png)
+
+</details>
 
 #### Distribution of One-Hot Encoded Categorical Features
 - The histograms for one-hot encoded categorical features provide insights into the distribution across different categories, like which data channel or which day of the week has more articles.
@@ -300,8 +302,6 @@ Note: The following was preserved from our original milestone submissions. I thi
 
 </details>
 
-
-</details>
 
 
 ### Data Preprocessing
