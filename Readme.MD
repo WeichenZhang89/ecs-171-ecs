@@ -269,7 +269,7 @@ Note: The following was preserved from our original milestone submissions. I thi
 </details>
 
 #### Scatter Plots for Features vs. Shares
-- Scatter plots provided visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
+- Scatter plots provide visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
 
 <details>
   <summary>Click to view the Scatter Plots</summary>
@@ -279,14 +279,27 @@ Note: The following was preserved from our original milestone submissions. I thi
 </details>
 
 #### Distribution of Continuous Features
-- Histograms offered a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
+- Histograms offer a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
 
 <details>
   <summary>Click to view the Histograms (continous columns)</summary>
 
-![Histograms for continous columns](Histograms.png)
+![Histograms for continous columns](histogram_plot.png)
 
 #### Distribution of One-Hot Encoded Categorical Features
+- The histograms for one-hot encoded categorical features provide insights into the distribution across different categories, like which data channel or which day of the week has more articles.
+- We separated the visualizations for continous and categorical features for three reasons:
+   - For continuous features, histograms reflect the distribution, central tendency, and spread of the data.
+   - For one-hot encoded categorical features, histograms display the count or frequency of observations in each distinct category, indicating the prevalence of each category in the dataset.
+   - Preprocessing techniques vary based on feature type (continuous vs categorical), affecting model performance, data integrity, and interpretability.
+
+<details>
+  <summary>Click to view the Histograms (categorical columns)</summary>
+
+![Histogram categorical](histogram_plot.png)
+
+</details>
+
 
 </details>
 
