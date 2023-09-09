@@ -247,6 +247,16 @@ TODO: Summarize final results of model 2 (accuracy, etc).
 
 
 Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
+
+### Data Exploration
+#### Descriptive Statistics
+- The descriptive statistics provided a summary of the central tendency, dispersion, and shape of the distribution of the dataset. It's a very useful method for a quick statistical summary, however it doesn't provide a full picture of data distribution. For a more comprehensive understanding, please refer to the histograms below.
+
+#### Scatter Plots for Features vs. Shares
+- Scatter plots provided visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
+
+![Scatter plots](Scatter_Plot.png)
+
 ### Data Preprocessing
 #### Data Imputation
 From the result of 
