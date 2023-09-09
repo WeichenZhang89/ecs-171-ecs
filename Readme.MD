@@ -271,7 +271,25 @@ Note: The following was preserved from our original milestone submissions. I thi
 #### Scatter Plots for Features vs. Shares
 - Scatter plots provided visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
 
+<details>
+  <summary>Click to view the Scatter Plots</summary>
+
 ![Scatter plots](Scatter_Plot.png)
+
+</details>
+
+#### Distribution of Continuous Features
+- Histograms offered a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
+
+<details>
+  <summary>Click to view the Histograms (continous columns)</summary>
+
+![Histograms for continous columns](Histograms.png)
+
+#### Distribution of One-Hot Encoded Categorical Features
+
+</details>
+
 
 ### Data Preprocessing
 #### Data Imputation
