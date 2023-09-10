@@ -218,7 +218,579 @@ new_data['quality'] = quality
 ```
 
 ### Original model
-TODO: Like the preprocessing section, simply elaborate what was done (what code was run, etc). In developing our first model. No explanations, just what we did
+We create an input matrix x by dropping specific columns from new_data, and then encodes the 'quality' column using one-hot encoding to produce a target matrix y:
+```
+x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
+y = OneHotEncoder().fit_transform(new_data[['quality']]).toarray()
+```
+
+We scale the input matrix x using the MinMaxScaler and then splits the scaled data into training and testing sets. It subsequently prints the range of the scaled training data and displays a histogram for each column of the scaled training data:
+```
+scaler = MinMaxScaler()
+scaled_X = scaler.fit_transform(x)
+
+xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, random_state=10)
+
+print("range of the xTrain:")
+print(xTrain.max() - xTrain.min())
+
+scale_xTrain = pd.DataFrame(xTrain)
+scale_xTest = pd.DataFrame(xTest)
+for i in scale_xTrain.columns:
+    plt.hist(xTrain[i])
+plt.title("Histogram of scale_xTrain")
+plt.show()
+```
+
+We build 2 neural network models with  'MirroredStrategy' for potential distributed training across multiple GPUs:
+```
+def build_nn_model(input_shape, num_classes):
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.Dense(128, activation='relu', input_shape=input_shape),
+        tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dense(32, activation='relu'),
+        tf.keras.layers.Dense(num_classes, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    return model
+
+mirror_strategy = tf.distribute.MirroredStrategy()
+with mirror_strategy.scope():
+    nn_model1 = build_nn_model(scale_xTrain.shape[1:], yTrain.shape[1])
+    nn_model2 = build_nn_model(scale_xTrain.shape[1:], yTrain.shape[1])
+
+    fit_speed = tf.data.Dataset.from_tensor_slices((scale_xTrain, yTrain))
+    fit_speed = fit_speed.repeat().batch(100)
+
+    nn_model1.fit(scale_xTrain, yTrain, epochs=10)
+    nn_model2.fit(scale_xTrain, yTrain, epochs=10)
+```
+
+We initialize a Random Forest classifier with 100 trees and then trains it on the scaled training data, converting the one-hot encoded target labels back to integer labels using argmax:
+```
+RF_model = RandomForestClassifier(n_estimators=100)
+RF_model.fit(scale_xTrain, yTrain.argmax(axis=1))
+```
+
+We then run the predictions of class probabilities for both the training and test datasets using three models (two neural networks and a Random Forest), then convert these probabilities to class labels, and print out the shapes of the predictions and the predicted labels.
+```
+nn1_train_pred = nn_model1.predict(scale_xTrain)
+nn2_train_pred = nn_model2.predict(scale_xTrain)
+RF_train_pred = RF_model.predict_proba(scale_xTrain)
+
+nn1_test_pred = nn_model1.predict(scale_xTest)
+nn2_test_pred = nn_model2.predict(scale_xTest)
+RF_test_pred = RF_model.predict_proba(scale_xTest)
+
+print("Shape:")
+print("nn1_train_pred:", nn1_train_pred.shape)
+print("nn2_train_pred:", nn2_train_pred.shape)
+print("RF_train_pred:", RF_train_pred.shape)
+
+nn1_train_labels = nn1_train_pred.argmax(axis=1)
+nn2_train_labels = nn2_train_pred.argmax(axis=1)
+RF_train_labels = RF_train_pred.argmax(axis=1)
+
+nn1_test_labels = nn1_test_pred.argmax(axis=1)
+nn2_test_labels = nn2_test_pred.argmax(axis=1)
+RF_test_labels = RF_test_pred.argmax(axis=1)
+
+print("Labels:")
+print("nn1_train_pred:", nn1_train_labels)
+print("nn2_train_pred:", nn2_train_labels)
+print("RF_train_pred:", RF_train_labels)
+print("nn1_test_pred:", nn1_test_labels)
+print("nn2_test_pred:", nn2_test_labels)
+print("RF_test_pred:", RF_test_labels)
+print()
+```
+
+To optimize performance, we constructed three separate ensemble models with different complexities.
+
+For the simple ensemble model, We initialize three Ridge regression models with different regularization strengths (alpha values of 0.01, 0.3, and 0.5), then fit each of these models to the scaled training data, and construct the ensemble model.
+```
+linmodel_1 = Ridge(alpha=0.01)
+linmodel_2 = Ridge(alpha=0.3)
+linmodel_3 = Ridge(alpha=0.5)
+
+linmodel_1.fit(scale_xTrain, yTrain)
+linmodel_2.fit(scale_xTrain, yTrain)
+linmodel_3.fit(scale_xTrain, yTrain)
+
+linmodel1_train_pred = linmodel_1.predict(scale_xTrain)
+linmodel2_train_pred = linmodel_2.predict(scale_xTrain)
+linmodel3_train_pred = linmodel_3.predict(scale_xTrain)
+
+linmodel1_test_pred = linmodel_1.predict(scale_xTest)
+linmodel2_test_pred = linmodel_2.predict(scale_xTest)
+linmodel3_test_pred = linmodel_3.predict(scale_xTest)
+
+ensemble_simple_train_pred = (linmodel1_train_pred + linmodel2_train_pred + linmodel3_train_pred) / 3
+ensemble_simple_test_pred = (linmodel1_test_pred + linmodel2_test_pred + linmodel3_test_pred) / 3
+
+ensemble_simple_train_labels = ensemble_simple_train_pred.argmax(axis=1)
+ensemble_simple_test_labels = ensemble_simple_test_pred.argmax(axis=1)
+```
+
+We then do the evaluation with classification report and confusion matrix for it:
+```
+print("Train:")
+print(classification_report(yTrain.argmax(axis=1), ensemble_simple_train_labels, zero_division=0))
+print("Test:")
+print(classification_report(yTest.argmax(axis=1), ensemble_simple_test_labels, zero_division=0))
+
+yTrain_labels = yTrain.argmax(axis=1)
+cf1 = confusion_matrix(yTrain_labels, ensemble_simple_train_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Training Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+yTest_labels = yTest.argmax(axis=1)
+cf1 = confusion_matrix(yTest_labels, ensemble_simple_test_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Testing Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+```
+
+And we calculate the accuracy for each component to check for overfitting:
+```
+lin1_train_labels = linmodel1_train_pred.argmax(axis=1)
+lin2_train_labels = linmodel2_train_pred.argmax(axis=1)
+lin3_train_labels = linmodel3_train_pred.argmax(axis=1)
+
+lin1_test_labels = linmodel1_test_pred.argmax(axis=1)
+lin2_test_labels = linmodel2_test_pred.argmax(axis=1)
+lin3_test_labels = linmodel3_test_pred.argmax(axis=1)
+
+lin1_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin1_train_labels)
+lin2_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin2_train_labels)
+lin3_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin3_train_labels)
+
+lin1_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin1_test_labels)
+lin2_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin2_test_labels)
+lin3_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin3_test_labels)
+
+ensemble_simple_train_accuracy = accuracy_score(yTrain.argmax(axis=1), ensemble_simple_train_labels)
+ensemble_simple_test_accuracy = accuracy_score(yTest.argmax(axis=1), ensemble_simple_test_labels)
+
+print("Model Train Accuracies:")
+print(f"LR 1: {lin1_train_accuracy:.4f}")
+print(f"LR 2: {lin2_train_accuracy:.4f}")
+print(f"LR 3: {lin3_train_accuracy:.4f}")
+print()
+
+print("Model Test Accuracies:")
+print(f"LR 1: {lin1_test_accuracy:.4f}")
+print(f"LR 2: {lin2_test_accuracy:.4f}")
+print(f"LR 3: {lin3_test_accuracy:.4f}")
+print()
+
+print("Ensemble Model:")
+print(f"Training Accuracy: {ensemble_simple_train_accuracy:.4f}")
+print(f"Testing Accuracy: {ensemble_simple_test_accuracy:.4f}")
+
+if ensemble_simple_test_accuracy > ensemble_simple_train_accuracy:
+    print("There could be overfitting.")
+else:
+    print("There should be no overfitting.")
+```
+
+For the medium ensemble model, we use 2 constructed nerual networks and 1 Ridge model to construct it:
+```
+ridge_train_prob = np.exp(linmodel1_train_pred) / np.sum(np.exp(linmodel1_train_pred), axis=1, keepdims=True)
+ridge_test_prob = np.exp(linmodel1_test_pred) / np.sum(np.exp(linmodel1_test_pred), axis=1, keepdims=True)
+
+ensemble_medium_train_pred = (nn1_train_pred + nn2_train_pred + linmodel1_train_pred) / 3
+ensemble_medium_test_pred = (nn1_test_pred + nn2_test_pred + linmodel1_test_pred) / 3
+
+ensemble_medium_train_labels = ensemble_medium_train_pred.argmax(axis=1)
+ensemble_medium_test_labels = ensemble_medium_test_pred.argmax(axis=1)
+```
+
+Similarly, we do the evaluation for it and check for overfitting:
+```
+print("Train:")
+print(classification_report(yTrain.argmax(axis=1), ensemble_medium_train_labels, zero_division=0))
+print("Test:")
+print(classification_report(yTest.argmax(axis=1), ensemble_medium_test_labels, zero_division=0))
+
+yTrain_labels = yTrain.argmax(axis=1)
+ensemble_medium_train_labels = ensemble_simple_train_pred.argmax(axis=1)
+cf1 = confusion_matrix(yTrain_labels, ensemble_medium_train_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Training Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+yTest_labels = yTest.argmax(axis=1)
+ensemble_medium_test_labels = ensemble_simple_test_pred.argmax(axis=1)
+cf1 = confusion_matrix(yTest_labels, ensemble_medium_test_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Testing Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+lin1_train_labels = linmodel1_train_pred.argmax(axis=1)
+lin2_train_labels = linmodel2_train_pred.argmax(axis=1)
+
+lin1_test_labels = linmodel1_test_pred.argmax(axis=1)
+lin2_test_labels = linmodel2_test_pred.argmax(axis=1)
+
+lin1_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin1_train_labels)
+lin2_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin2_train_labels)
+nn1_train_accuracy = accuracy_score(yTrain.argmax(axis=1), nn1_train_labels)
+
+lin1_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin1_test_labels)
+lin2_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin2_test_labels)
+nn1_test_accuracy = accuracy_score(yTest.argmax(axis=1), nn1_test_labels)
+
+ensemble_medium_train_accuracy = accuracy_score(yTrain.argmax(axis=1), ensemble_medium_train_labels)
+ensemble_medium_test_accuracy = accuracy_score(yTest.argmax(axis=1), ensemble_medium_test_labels)
+
+print("Model Train Accuracies:")
+print(f"LR 1: {lin1_train_accuracy:.4f}")
+print(f"LR 2: {lin2_train_accuracy:.4f}")
+print(f"NN : {nn1_train_accuracy:.4f}")
+print()
+
+print("Model Test Accuracies:")
+print(f"LR 1: {lin1_test_accuracy:.4f}")
+print(f"LR 2: {lin2_test_accuracy:.4f}")
+print(f"NN : {nn1_test_accuracy:.4f}")
+print()
+
+print("Ensemble Model:")
+print(f"Training Accuracy: {ensemble_medium_train_accuracy:.4f}")
+print(f"Testing Accuracy: {ensemble_medium_test_accuracy:.4f}")
+
+if ensemble_simple_test_accuracy > ensemble_simple_train_accuracy:
+    print("There could be overfitting.")
+else:
+    print("There should be no overfitting.")
+```
+
+For the complex ensemble model, we apply 2 nerual networks with 1 random forest and do the evaluation:
+```
+ensemble_train_pred = (nn1_train_pred + nn2_train_pred + RF_train_pred) / 3
+ensemble_test_pred = (nn1_test_pred + nn2_test_pred + RF_test_pred) / 3
+
+ensemble_train_labels = ensemble_train_pred.argmax(axis=1)
+ensemble_test_labels = ensemble_test_pred.argmax(axis=1)
+
+print("ensemble_train_labels:",ensemble_train_labels)
+print("ensemble_train_labels:",ensemble_train_labels)
+
+print("Train:")
+print(classification_report(yTrain.argmax(axis=1), ensemble_train_labels))
+print("Test:")
+print(classification_report(yTest.argmax(axis=1), ensemble_test_labels))
+
+yTrain_labels = yTrain.argmax(axis=1)
+cf1 = confusion_matrix(yTrain_labels, ensemble_train_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Training Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+yTest_labels = yTest.argmax(axis=1)
+cf1 = confusion_matrix(yTest_labels, ensemble_test_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Testing Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+nn1_train_accuracy = accuracy_score(yTrain.argmax(axis=1), nn1_train_labels)
+nn2_train_accuracy = accuracy_score(yTrain.argmax(axis=1), nn2_train_labels)
+RF_train_accuracy = accuracy_score(yTrain.argmax(axis=1), RF_train_labels)
+
+nn1_test_accuracy = accuracy_score(yTest.argmax(axis=1), nn1_test_labels)
+nn2_test_accuracy = accuracy_score(yTest.argmax(axis=1), nn2_test_labels)
+RF_test_accuracy = accuracy_score(yTest.argmax(axis=1), RF_test_labels)
+
+ensemble_train_accuracy = accuracy_score(yTrain.argmax(axis=1), ensemble_train_labels)
+ensemble_test_accuracy = accuracy_score(yTest.argmax(axis=1), ensemble_test_labels)
+
+print("Model Train Accuracies:")
+print(f"Neural Network 1: {nn1_train_accuracy:.4f}")
+print(f"Neural Network 2: {nn2_train_accuracy:.4f}")
+print(f"Random Forest: {RF_train_accuracy:.4f}")
+print()
+
+print("Model Test Accuracies:")
+print(f"Neural Network 1: {nn1_test_accuracy:.4f}")
+print(f"Neural Network 2: {nn2_test_accuracy:.4f}")
+print(f"Random Forest: {RF_test_accuracy:.4f}")
+print()
+
+print("Ensemble Model:")
+print(f"Training Accuracy: {ensemble_train_accuracy:.4f}")
+print(f"Testing Accuracy: {ensemble_test_accuracy:.4f}")
+
+if ensemble_test_accuracy > ensemble_train_accuracy:
+    print("There could be overfitting.")
+else:
+    print("There should be no overfitting.")
+```
+
+Then we apply Stratified KFold to each ensemble model:
+```
+# Initialize empty lists to store trained models
+nn1_models, nn2_models, rf_models, ridge1_models, ridge2_models, ridge3_models = [], [], [], [], [], []
+
+# Define StratifiedKFold instance
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=10)
+
+mirror_strategy = tf.distribute.MirroredStrategy()
+
+for train_index, test_index in skf.split(x, y.argmax(axis=1)):
+    xTrain_fold, xTest_fold = x.iloc[train_index].values, x.iloc[test_index].values
+    yTrain_fold, yTest_fold = y[train_index], y[test_index]
+
+    # Scale data after splitting
+    scaler = MinMaxScaler()
+    xTrain_fold = scaler.fit_transform(xTrain_fold)
+    xTest_fold = scaler.transform(xTest_fold)  # Important: transform only using the train data scaling parameters
+
+    # Neural Network Training within the mirror_strategy scope
+    with mirror_strategy.scope():
+        nn_model1 = build_nn_model(xTrain_fold.shape[1:], yTrain_fold.shape[1])
+        nn_model2 = build_nn_model(xTrain_fold.shape[1:], yTrain_fold.shape[1])
+
+        nn_model1.fit(xTrain_fold, yTrain_fold, epochs=10, verbose=0)
+        nn_model2.fit(xTrain_fold, yTrain_fold, epochs=10, verbose=0)
+
+    # Random Forest Training
+    RF_model = RandomForestClassifier(n_estimators=100)
+    RF_model.fit(xTrain_fold, yTrain_fold.argmax(axis=1))
+
+    # Ridge Regression Training
+    linmodel_1 = Ridge(alpha=0.01)
+    linmodel_2 = Ridge(alpha=0.3)
+    linmodel_3 = Ridge(alpha=0.5)
+    linmodel_1.fit(xTrain_fold, yTrain_fold)
+    linmodel_2.fit(xTrain_fold, yTrain_fold)
+    linmodel_3.fit(xTrain_fold, yTrain_fold)
+
+    # Store trained models
+    nn1_models.append(nn_model1)
+    nn2_models.append(nn_model2)
+    rf_models.append(RF_model)
+    ridge1_models.append(linmodel_1)
+    ridge2_models.append(linmodel_2)
+    ridge3_models.append(linmodel_3)
+```
+
+We then do the evaluations for them again:
+```
+def complex_ensemble_accuracy(nn1_models, nn2_models, rf_models):
+
+    train_accuracies = []
+    test_accuracies = []
+
+    for i in range(5):
+        # Train metrics
+        nn1_train_pred = nn1_models[i].predict(scale_xTrain)
+        nn2_train_pred = nn2_models[i].predict(scale_xTrain)
+        RF_train_pred = rf_models[i].predict_proba(scale_xTrain)
+
+        ensemble_train_pred = (nn1_train_pred + nn2_train_pred + RF_train_pred) / 3
+        ensemble_train_labels = ensemble_train_pred.argmax(axis=1)
+
+        train_acc = accuracy_score(yTrain.argmax(axis=1), ensemble_train_labels)
+        train_accuracies.append(train_acc)
+
+        # Test metrics
+        nn1_test_pred = nn1_models[i].predict(scale_xTest)
+        nn2_test_pred = nn2_models[i].predict(scale_xTest)
+        RF_test_pred = rf_models[i].predict_proba(scale_xTest)
+
+        ensemble_test_pred = (nn1_test_pred + nn2_test_pred + RF_test_pred) / 3
+        ensemble_test_labels = ensemble_test_pred.argmax(axis=1)
+
+        test_acc = accuracy_score(yTest.argmax(axis=1), ensemble_test_labels)
+        test_accuracies.append(test_acc)
+
+    return train_accuracies, test_accuracies
+
+# Compute average train and test accuracies for the complex ensemble
+complex_ensemble_train_acc, complex_ensemble_test_acc = complex_ensemble_accuracy(nn1_models, nn2_models, rf_models)
+
+#Avearage of train and test accuracies
+avg_train_acc = np.mean(complex_ensemble_train_acc)
+avg_test_acc = np.mean(complex_ensemble_test_acc)
+
+print("Complex Ensemble Model:")
+print(f"Training Accuracy: {avg_train_acc:.4f}")
+print(f"Testing Accuracy: {avg_test_acc:.4f}")
+
+#Plot train against test acc across the folds
+plt.plot(complex_ensemble_train_acc, label='Training Accuracy')
+plt.plot(complex_ensemble_test_acc, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Complex Ensemble with 2NN + 1RF')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
+
+```
+def medium_ensemble_accuracy(nn1_models, nn2_models, ridge_models):
+    train_accuracies = []
+    test_accuracies = []
+
+    for i in range(5):
+        # Train metrics
+        nn1_train_pred = nn1_models[i].predict(scale_xTrain)
+        nn2_train_pred = nn2_models[i].predict(scale_xTrain)
+        ridge_train_pred = ridge_models[i].predict(scale_xTrain)
+
+        # Convert ridge predictions to probabilities using softmax
+        ridge_train_prob = np.exp(ridge_train_pred) / np.sum(np.exp(ridge_train_pred), axis=1, keepdims=True)
+
+        ensemble_train_pred = (nn1_train_pred + nn2_train_pred + ridge_train_prob) / 3
+        ensemble_train_labels = ensemble_train_pred.argmax(axis=1)
+
+        train_acc = accuracy_score(yTrain.argmax(axis=1), ensemble_train_labels)
+        train_accuracies.append(train_acc)
+
+        # Test metrics
+        nn1_test_pred = nn1_models[i].predict(scale_xTest)
+        nn2_test_pred = nn2_models[i].predict(scale_xTest)
+        ridge_test_pred = ridge_models[i].predict(scale_xTest)
+
+        # Convert ridge predictions to probabilities using softmax
+        ridge_test_prob = np.exp(ridge_test_pred) / np.sum(np.exp(ridge_test_pred), axis=1, keepdims=True)
+
+        ensemble_test_pred = (nn1_test_pred + nn2_test_pred + ridge_test_prob) / 3
+        ensemble_test_labels = ensemble_test_pred.argmax(axis=1)
+
+        test_acc = accuracy_score(yTest.argmax(axis=1), ensemble_test_labels)
+        test_accuracies.append(test_acc)
+
+    return train_accuracies, test_accuracies
+
+# Compute average train and test accuracies for the medium ensemble with Ridge 1 (alpha = 0.01)
+medium_ensemble_train_acc_1, medium_ensemble_test_acc_1 = medium_ensemble_accuracy(nn1_models, nn2_models, ridge1_models)
+# Average of train and test accuracies
+avg_train_acc = np.mean(medium_ensemble_train_acc_1)
+avg_test_acc = np.mean(medium_ensemble_test_acc_1)
+
+print("Medium Ensemble Model with Ridge1:")
+print(f"Training Accuracy: {avg_train_acc:.4f}")
+print(f"Testing Accuracy: {avg_test_acc:.4f}")
+print("\n")
+
+plt.plot(medium_ensemble_train_acc_1, label='Training Accuracy')
+plt.plot(medium_ensemble_test_acc_1, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Medium Ensemble with 2NN + Ridge 1')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+# Compute average train and test accuracies for the medium ensemble with Ridge 1 (alpha = 0.3)
+medium_ensemble_train_acc_2, medium_ensemble_test_acc_2 = medium_ensemble_accuracy(nn1_models, nn2_models, ridge2_models)
+# Average of train and test accuracies
+avg_train_acc2 = np.mean(medium_ensemble_train_acc_2)
+avg_test_acc2 = np.mean(medium_ensemble_test_acc_2)
+
+print("Medium Ensemble Model with Ridge2:")
+print(f"Training Accuracy: {avg_train_acc2:.4f}")
+print(f"Testing Accuracy: {avg_test_acc2:.4f}")
+
+plt.plot(medium_ensemble_train_acc_2, label='Training Accuracy')
+plt.plot(medium_ensemble_test_acc_2, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Medium Ensemble with 2NN +Ridge 2')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+# Compute average train and test accuracies for the medium ensemble with Ridge 1 (alpha = 0.5)
+medium_ensemble_train_acc_3, medium_ensemble_test_acc_3 = medium_ensemble_accuracy(nn1_models, nn2_models, ridge3_models)
+# Average of train and test accuracies
+avg_train_acc3 = np.mean(medium_ensemble_train_acc_3)
+avg_test_acc3 = np.mean(medium_ensemble_test_acc_3)
+print("Medium Ensemble Model with Ridge3:")
+print(f"Training Accuracy: {avg_train_acc3:.4f}")
+print(f"Testing Accuracy: {avg_test_acc3:.4f}")
+
+plt.plot(medium_ensemble_train_acc_3, label='Training Accuracy')
+plt.plot(medium_ensemble_test_acc_3, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Medium Ensemble with 2NN + Ridge 3')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
+
+```
+def easy_ensemble_accuracy(ridge1_models, ridge2_models, ridge3_models):
+
+    train_accuracies = []
+    test_accuracies = []
+
+    for i in range(5):
+        # Train metrics
+        ridge1_train_pred = ridge1_models[i].predict(scale_xTrain)
+        ridge2_train_pred = ridge2_models[i].predict(scale_xTrain)
+        ridge3_train_pred = ridge3_models[i].predict(scale_xTrain)
+
+        ensemble_train_pred = (ridge1_train_pred + ridge2_train_pred + ridge3_train_pred) / 3
+        ensemble_train_labels = ensemble_train_pred.argmax(axis=1)
+
+        train_acc = accuracy_score(yTrain.argmax(axis=1), ensemble_train_labels)
+        train_accuracies.append(train_acc)
+
+        # Test metrics
+        ridge1_test_pred = ridge1_models[i].predict(scale_xTest)
+        ridge2_test_pred = ridge2_models[i].predict(scale_xTest)
+        ridge3_test_pred = ridge3_models[i].predict(scale_xTest)
+
+        ensemble_test_pred = (ridge1_test_pred + ridge2_test_pred + ridge3_test_pred) / 3
+        ensemble_test_labels = ensemble_test_pred.argmax(axis=1)
+
+        test_acc = accuracy_score(yTest.argmax(axis=1), ensemble_test_labels)
+        test_accuracies.append(test_acc)
+
+
+
+    return train_accuracies, test_accuracies
+
+# Compute average train and test accuracies for the easy ensemble
+easy_ensemble_train_acc, easy_ensemble_test_acc = easy_ensemble_accuracy(ridge1_models, ridge2_models, ridge3_models)
+
+# Average of train and test accuracies
+avg_train_acc = np.mean(easy_ensemble_train_acc)
+avg_test_acc = np.mean(easy_ensemble_test_acc)
+
+print("Easy Ensemble Model:")
+print(f"Training Accuracy: {avg_train_acc:.4f}")
+print(f"Testing Accuracy: {avg_test_acc:.4f}")
+
+# Plot train acc against test acc
+plt.plot(easy_ensemble_train_acc, label='Training Accuracy')
+plt.plot(easy_ensemble_test_acc, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Easy Ensemble')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
 
 
 ### Improved model
