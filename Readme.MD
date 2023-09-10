@@ -804,7 +804,7 @@ plt.show()
 ### Improved model
 TODO: Same thing, but explain it for our second model
 testing
-'''
+```
 x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
 y = new_data['quality']
 le = LabelEncoder()
@@ -815,7 +815,7 @@ xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, rand
 scale_xTrain = pd.DataFrame(xTrain)
 scale_xTest = pd.DataFrame(xTest)
 
-'''
+```
 
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
