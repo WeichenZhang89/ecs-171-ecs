@@ -218,6 +218,7 @@ new_data['quality'] = quality
 ```
 
 ### Original model
+#### Preprocessing and Visualizing the Input Data
 We create an input matrix x by dropping specific columns from new_data, and then encodes the 'quality' column using one-hot encoding to produce a target matrix y:
 ```
 x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
@@ -242,6 +243,7 @@ plt.title("Histogram of scale_xTrain")
 plt.show()
 ```
 
+#### Setting Up the Nerual Networks and Random Forest Components
 We build 2 neural network models with  'MirroredStrategy' for potential distributed training across multiple GPUs:
 ```
 def build_nn_model(input_shape, num_classes):
@@ -306,8 +308,10 @@ print("RF_test_pred:", RF_test_labels)
 print()
 ```
 
+#### Ensemble Models
 To optimize performance, we constructed three separate ensemble models with different complexities.
 
+##### The Simple Ensemble Model
 For the simple ensemble model, We initialize three Ridge regression models with different regularization strengths (alpha values of 0.01, 0.3, and 0.5), then fit each of these models to the scaled training data, and construct the ensemble model.
 ```
 linmodel_1 = Ridge(alpha=0.01)
@@ -400,6 +404,7 @@ else:
     print("There should be no overfitting.")
 ```
 
+##### The Medium Ensemble Model
 For the medium ensemble model, we use 2 constructed nerual networks and 1 Ridge model to construct it:
 ```
 ridge_train_prob = np.exp(linmodel1_train_pred) / np.sum(np.exp(linmodel1_train_pred), axis=1, keepdims=True)
@@ -476,6 +481,7 @@ else:
     print("There should be no overfitting.")
 ```
 
+##### The Complex Ensemble Model
 For the complex ensemble model, we apply 2 nerual networks with 1 random forest and do the evaluation:
 ```
 ensemble_train_pred = (nn1_train_pred + nn2_train_pred + RF_train_pred) / 3
@@ -541,6 +547,7 @@ else:
     print("There should be no overfitting.")
 ```
 
+#### Applying Stratified KFold
 Then we apply Stratified KFold to each ensemble model:
 ```
 # Initialize empty lists to store trained models
@@ -589,6 +596,7 @@ for train_index, test_index in skf.split(x, y.argmax(axis=1)):
     ridge3_models.append(linmodel_3)
 ```
 
+#### Evaluating the Models with Stratified KFold
 We then do the evaluations for them again:
 ```
 def complex_ensemble_accuracy(nn1_models, nn2_models, rf_models):
