@@ -1079,21 +1079,7 @@ precisions_rf_test = np.array([report_rf_test[str(i)]['precision'] for i in rang
 
 ```
 #### weight the prediction, reshape in order to make the 
-multiplication success
-
-```
-# Use test set precisions to weight each model's predictions on both the training and test sets
-nn1_preds_train *= precisions_nn1_test.reshape(1, -1)
-nn2_preds_train *= precisions_nn2_test.reshape(1, -1)
-rf_preds_train *= precisions_rf_test.reshape(1, -1)
-
-nn1_preds_test *= precisions_nn1_test.reshape(1, -1)
-nn2_preds_test *= precisions_nn2_test.reshape(1, -1)
-rf_preds_test *= precisions_rf_test.reshape(1, -1)
-```
-
-
-
+#### multiplication success
 
 ```
 # Use test set precisions to weight each model's predictions on both the training and test sets
@@ -1106,6 +1092,70 @@ nn2_preds_test *= precisions_nn2_test.reshape(1, -1)
 rf_preds_test *= precisions_rf_test.reshape(1, -1)
 
 
+```
+
+
+#### average the prediction result, and find the most confirmed 
+#### probablity on each row
+
+```
+# Compute the ensemble predictions for both the training and test sets
+ensemble_preds_train = (nn1_preds_train + nn2_preds_train + rf_preds_train) / 3
+ensemble_preds_test = (nn1_preds_test + nn2_preds_test + rf_preds_test) / 3
+
+# Get results for both the training and test sets
+ensemble_preds_train = np.argmax(ensemble_preds_train, axis=1)
+ensemble_preds_test = np.argmax(ensemble_preds_test, axis=1)
+```
+
+#### find the training and testing accuracy
+
+```
+# Calculate the ensemble model accuracy on both the training and testing sets
+ensemble_train_accuracy = accuracy_score(yTrain, ensemble_preds_train)
+ensemble_test_accuracy = accuracy_score(yTest, ensemble_preds_test)
+
+# Print the ensemble model accuracies
+print(f"Ensemble training accuracy: {ensemble_train_accuracy:.5f}")
+print(f"Ensemble test accuracy: {ensemble_test_accuracy:.5f}")
+```
+
+#### print the classification report for the emsemble model training and testing set
+
+```
+print("Classification Report for Training Set:")
+print(classification_report(yTrain, ensemble_preds_train))
+
+print("Classification Report for Test Set:")
+print(classification_report(yTest, ensemble_preds_test))
+```
+
+#### construct the confusion matrix base on the emsemble model training and testing set
+
+```
+confusion_matrix_train = confusion_matrix(yTrain, ensemble_preds_train)
+confusion_matrix_test = confusion_matrix(yTest, ensemble_preds_test)
+```
+
+
+#### Base on the confusion matrix, we plot the figure of heatmap
+```
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+sns.heatmap(confusion_matrix_train, annot=True, fmt="d", cmap='Blues')
+plt.title('Confusion Matrix for Training Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+
+plt.subplot(1, 2, 2)
+sns.heatmap(confusion_matrix_test, annot=True, fmt="d", cmap='Blues')
+plt.title('Confusion Matrix for Test Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+
+plt.tight_layout()
+plt.show()
 ```
 
 ## Results
