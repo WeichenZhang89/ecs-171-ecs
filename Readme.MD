@@ -1186,7 +1186,7 @@ TODO: Explore results of our first model, do overfitting analysis
 ### How confirm on each steps
 
 - The training accuracy and training loss for the Neural Network Model 1, we can see that the accuracy trend and loss trend are opposite. There are skewed lines at the end of the curve for both training accuracy and training loss. We set epochs to be 100 to increase the model train well. 
-
+<img src = "improve_model_images/nn1_training_loss.png">
 - The heatmap for the Neural Network 1, the diagonal line of the graph is mostly the darker blue, meaning the TRUE POSITIVE: the prediction is true, and in fact, it is true. The number that is not on the diagonal is also not close zero. The lowest precision and lowest TRUE POSITIVE is class 2. The testing accuracy and training accuracy are 68.73599% and 68.73599%.
  
 - The heatmap for the Neural Network 2, the diagonal line of the graph is mostly the darker blue, the numbers are similar to Neural Network 1, since we change the number of units at each layer. The lowest TRUE POSITIVE is class 2, but the lowest precision switches to class 1. That indicates the changing of units number at each layer does affect the performance of models. Test Accuracy: 64.32175%, Train Accuracy: 65.26994%. 
