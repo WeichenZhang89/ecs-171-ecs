@@ -1436,6 +1436,7 @@ plt.show()
 
 ### Evaluation data obtained by Original MODEL
 #### The Simple Ensemble Model
+```
 Train:
               precision    recall  f1-score   support
 
@@ -1459,9 +1460,9 @@ Test:
     accuracy                           0.44      7136
    macro avg       0.39      0.33      0.30      7136
 weighted avg       0.42      0.44      0.39      7136
+```
 
-
-
+```
 Model Train Accuracies:
 LR 1: 0.4404
 LR 2: 0.4398
@@ -1476,8 +1477,10 @@ Ensemble Model:
 Training Accuracy: 0.4399
 Testing Accuracy: 0.4421
 There could be overfitting.
+```
 
 #### The Medium Ensemble Model
+```
 Train:
               precision    recall  f1-score   support
 
@@ -1501,8 +1504,9 @@ Test:
     accuracy                           0.44      7136
    macro avg       0.39      0.33      0.30      7136
 weighted avg       0.42      0.44      0.39      7136
+```
 
-
+```
 Model Train Accuracies:
 LR 1: 0.4404
 LR 2: 0.4398
@@ -1517,8 +1521,10 @@ Ensemble Model:
 Training Accuracy: 0.4399
 Testing Accuracy: 0.4421
 There could be overfitting.
+```
 
 #### The Complex Ensemble Model
+```
 Train:
               precision    recall  f1-score   support
 
@@ -1542,8 +1548,9 @@ Test:
     accuracy                           0.45      7136
    macro avg       0.42      0.35      0.34      7136
 weighted avg       0.44      0.45      0.41      7136
+```
 
-
+```
 Model Train Accuracies:
 Neural Network 1: 0.4697
 Neural Network 2: 0.4653
@@ -1558,13 +1565,17 @@ Ensemble Model:
 Training Accuracy: 0.8530
 Testing Accuracy: 0.4561
 There should be no overfitting.
+```
 
 #### The Simple Ensemble Model with Stratified KFold
+```
 Easy Ensemble Model:
 Training Accuracy: 0.4503
 Testing Accuracy: 0.4427
+```
 
 #### The Medium Ensemble Model with Stratified KFold
+```
 Medium Ensemble Model with Ridge1:
 Training Accuracy: 0.4676
 Testing Accuracy: 0.4642
@@ -1576,11 +1587,14 @@ Testing Accuracy: 0.4641
 Medium Ensemble Model with Ridge3:
 Training Accuracy: 0.4676
 Testing Accuracy: 0.4641
+```
 
 #### The Complex Ensemble Model with Stratified KFold
+```
 Complex Ensemble Model:
 Training Accuracy: 0.7028
 Testing Accuracy: 0.7010
+```
 
 ### Discussion for Improved MODEL
 
