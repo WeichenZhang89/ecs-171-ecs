@@ -1434,7 +1434,7 @@ plt.legend()
 plt.show()
 ```
 
-### Evaluation data obtained by Original MODEL
+### Evaluation Data Obtained by Original MODEL
 #### The Simple Ensemble Model
 ```
 Train:
