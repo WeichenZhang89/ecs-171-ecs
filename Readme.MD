@@ -1436,6 +1436,7 @@ plt.show()
 
 ### Evaluation Data Obtained by Original MODEL
 #### The Simple Ensemble Model
+##### Classification Reports
 ```
 Train:
               precision    recall  f1-score   support
@@ -1461,7 +1462,10 @@ Test:
    macro avg       0.39      0.33      0.30      7136
 weighted avg       0.42      0.44      0.39      7136
 ```
-
+##### Confusion Matrices
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/SP1.png)
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/SP2.png)
+##### Accuracies
 ```
 Model Train Accuracies:
 LR 1: 0.4404
@@ -1480,6 +1484,7 @@ There could be overfitting.
 ```
 
 #### The Medium Ensemble Model
+##### Classification Reports
 ```
 Train:
               precision    recall  f1-score   support
@@ -1505,7 +1510,9 @@ Test:
    macro avg       0.39      0.33      0.30      7136
 weighted avg       0.42      0.44      0.39      7136
 ```
+##### Confusion Matrices
 
+##### Accuracies
 ```
 Model Train Accuracies:
 LR 1: 0.4404
@@ -1524,6 +1531,7 @@ There could be overfitting.
 ```
 
 #### The Complex Ensemble Model
+##### Classification Reports
 ```
 Train:
               precision    recall  f1-score   support
@@ -1549,7 +1557,9 @@ Test:
    macro avg       0.42      0.35      0.34      7136
 weighted avg       0.44      0.45      0.41      7136
 ```
+##### Confusion Matrices
 
+##### Accuracies
 ```
 Model Train Accuracies:
 Neural Network 1: 0.4697
@@ -1568,6 +1578,7 @@ There should be no overfitting.
 ```
 
 #### The Simple Ensemble Model with Stratified KFold
+##### Accuracies
 ```
 Easy Ensemble Model:
 Training Accuracy: 0.4503
@@ -1575,6 +1586,7 @@ Testing Accuracy: 0.4427
 ```
 
 #### The Medium Ensemble Model with Stratified KFold
+##### Accuracies
 ```
 Medium Ensemble Model with Ridge1:
 Training Accuracy: 0.4676
@@ -1590,6 +1602,7 @@ Testing Accuracy: 0.4641
 ```
 
 #### The Complex Ensemble Model with Stratified KFold
+##### Accuracies
 ```
 Complex Ensemble Model:
 Training Accuracy: 0.7028
