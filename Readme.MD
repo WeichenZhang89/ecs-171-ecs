@@ -1163,12 +1163,12 @@ Note: Just reporting the results will be good enough. I think the analysis is su
 
 
 ## Discussion
-### Discussion for FIRST MODEL
+### Discussion for Original MODEL
 TODO: Repeat the Methods & Results section, but explain the reasoning behind each section. 
 
 TODO: Explore results of our first model, do overfitting analysis
 
-### Discussion for SECOND MODEL
+### Discussion for Improved MODEL
 
 ### Difference between Data Preprocessing & ML model.ipynb/Original Models and  Improved ML model.ipynb/Improved Model
 
