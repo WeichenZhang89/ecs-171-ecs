@@ -1511,7 +1511,8 @@ Test:
 weighted avg       0.42      0.44      0.39      7136
 ```
 ##### Confusion Matrices
-
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD1.png)
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD2.png)
 ##### Accuracies
 ```
 Model Train Accuracies:
@@ -1558,7 +1559,8 @@ Test:
 weighted avg       0.44      0.45      0.41      7136
 ```
 ##### Confusion Matrices
-
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/CP1.png)
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/CP2.png)
 ##### Accuracies
 ```
 Model Train Accuracies:
@@ -1584,6 +1586,8 @@ Easy Ensemble Model:
 Training Accuracy: 0.4503
 Testing Accuracy: 0.4427
 ```
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/SP3.png)
+
 
 #### The Medium Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1600,6 +1604,9 @@ Medium Ensemble Model with Ridge3:
 Training Accuracy: 0.4676
 Testing Accuracy: 0.4641
 ```
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD3.png)
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD4.png)
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD5.png)
 
 #### The Complex Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1608,6 +1615,8 @@ Complex Ensemble Model:
 Training Accuracy: 0.7028
 Testing Accuracy: 0.7010
 ```
+![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/CP3.png)
+
 
 ### Discussion for Improved MODEL
 
