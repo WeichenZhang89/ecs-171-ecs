@@ -1185,6 +1185,16 @@ TODO: Explore results of our first model, do overfitting analysis
 
 ### How confirm on each steps
 
+- The training accuracy and training loss for the Neural Network Model 1, we can see that the accuracy trend and loss trend are opposite. There are skewed lines at the end of the curve for both training accuracy and training loss. We set epochs to be 100 to increase the model train well. 
+
+- The heatmap for the Neural Network 1, the diagonal line of the graph is mostly the darker blue, meaning the TRUE POSITIVE: the prediction is true, and in fact, it is true. The number that is not on the diagonal is also not close zero. The lowest precision and lowest TRUE POSITIVE is class 2. The testing accuracy and training accuracy are 68.73599% and 68.73599%.
+ 
+- The heatmap for the Neural Network 2, the diagonal line of the graph is mostly the darker blue, the numbers are similar to Neural Network 1, since we change the number of units at each layer. The lowest TRUE POSITIVE is class 2, but the lowest precision switches to class 1. That indicates the changing of units number at each layer does affect the performance of models. Test Accuracy: 64.32175%, Train Accuracy: 65.26994%. 
+
+- Compared to the original Random Forest model construction in Data Preprocessing & ML model.ipynb, the number of trees is 100, now we increase to 1000 in Improved ML model.ipynb. The lowest precision is Class 3. Test Accuracy: 82.95964%, Train Accuracy: 83.40048%, which are the highest accuracy in the 3 components for the improved model. 
+
+- Finally, we ensemble three components of the improved model, so we could make the model more accurate for each class. 
+
 
 
 
