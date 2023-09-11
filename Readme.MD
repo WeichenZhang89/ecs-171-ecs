@@ -803,21 +803,21 @@ plt.show()
 
 ### Improved model
 
-### set X and y
-#### select all columns except 'quality', 'url', 'timedelta', 'shares'
-#### target column is 'quality'
+### Set X and y
+#### Select all columns except 'quality', 'url', 'timedelta', 'shares' 
+#### Target column is 'quality'
 ```
 x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
 y = new_data['quality']
 
 ```
-#### apply label encoding to y
+#### Apply label encoding to y
 ```
 le = LabelEncoder()
 y = le.fit_transform(y)
 
 ```
-#### scale the x, and then split train/test for x/y
+#### Scale the x, and then split train/test for x/y
 ```
 scaler = MinMaxScaler()
 scaled_X = scaler.fit_transform(x)
@@ -825,7 +825,7 @@ xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, rand
 
 ```
 
-#### convert data type of xTrain, xTest to dataframe
+#### Convert data type of xTrain, xTest to dataframe
 ```
 scale_xTrain = pd.DataFrame(xTrain)
 scale_xTest = pd.DataFrame(xTest)
@@ -833,7 +833,7 @@ scale_xTest = pd.DataFrame(xTest)
 ```
 
 ### Build the NN1 model
-#### build the model with 4 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'relu' and 'softmax'
+#### Build the model with 4 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'relu' and 'softmax'
 ```
 nn1 = Sequential([
     Dense(512, activation='relu', input_dim=scale_xTrain.shape[1]),
@@ -845,7 +845,7 @@ nn1 = Sequential([
 
 ```
 
-#### compile and train the model
+#### Compile and train the model
 
 ```
 nn1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
@@ -853,13 +853,13 @@ nn1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['
 history = nn1.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
 
 ```
-### train accuracy graph
-#### extract 'accuracy' value and use that as y value
-#### set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
+### Train accuracy graph
+#### Extract 'accuracy' value and use that as y value
+#### Set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
 
-### train loss graph
-#### extract 'loss' value and use that as y value
-#### set the name for x-axis = 'Epochs', y-axis = 'Loss'
+### Train loss graph
+#### Extract 'loss' value and use that as y value
+#### Set the name for x-axis = 'Epochs', y-axis = 'Loss'
 
 ```
 nn1.save('nn1.h5')
@@ -882,9 +882,9 @@ plt.show()
 ```
 
 ### Evaluate NN1 model
-#### load the model we saved in the previous step
-#### do the prediction of y based on the scale_xTest
-#### print the classification report
+#### Load the model we saved in the previous step
+#### Do the prediction of y based on the scale_xTest
+#### Print the classification report
 ```
 import seaborn as sns
 nn1 = load_model('nn1.h5')
@@ -894,9 +894,8 @@ print(classification_report(yTest, y_predict))
 
 ```
 
-#### build the confusion matrix and display that as the heatmap form
-#### number are shown on the heatmap
-#### xlabel = 'Predicted', ylabel = 'True'
+#### Build the confusion matrix and display that as the heatmap form
+#### Number are shown on the heatmap: xlabel = 'Predicted', ylabel = 'True'
 ```
 cf = confusion_matrix(yTest, y_predict)
 sns.heatmap(cf, annot=True, fmt='d', cmap='Blues')
@@ -906,7 +905,7 @@ plt.show()
 
 ```
 
-#### print the testing and training accuracy
+#### Print the testing and training accuracy
 ```
 nn1_test_accuracy = accuracy_score(yTest, y_predict)
 print(f"Test Accuracy: {nn1_test_accuracy * 100:.5f}%")
@@ -919,7 +918,7 @@ print(f"Train Accuracy: {nn1_test_accuracy * 100:.5f}%")
 
 
 ### Build the NN2 model
-#### build the model with 5 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'tanh' and 'softmax'
+#### Build the model with 5 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'tanh' and 'softmax'
 ```
 nn2 = Sequential([
     Dense(512, activation='tanh', input_dim=scale_xTrain.shape[1]),
@@ -930,7 +929,7 @@ nn2 = Sequential([
 ])
 
 ```
-#### compile and train the model
+#### Compile and train the model
 ```
 nn2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
@@ -939,13 +938,13 @@ nn2.save('nn2.h5')
 
 
 ```
-### train accuracy graph
-#### extract 'accuracy' value and use that as y value
-#### set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
+### Train accuracy graph
+#### Extract 'accuracy' value and use that as y value
+#### Set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
 
-### train loss graph
-#### extract 'loss' value and use that as y value
-#### set the name for x-axis = 'Epochs', y-axis = 'Loss'
+### Train loss graph
+#### Extract 'loss' value and use that as y value
+#### Set the name for x-axis = 'Epochs', y-axis = 'Loss'
 
 
 ```
@@ -967,9 +966,9 @@ plt.show()
 
 
 ### Evaluate NN2 model
-#### load the model we saved in the previous step
-#### do the prediction of y based on the scale_xTest
-#### print the classification report
+#### Load the model we saved in the previous step
+#### Do the prediction of y based on the scale_xTest
+#### Print the classification report
 
 ```
 nn2 = load_model('nn2.h5')
@@ -980,9 +979,8 @@ print(classification_report(yTest, y_predict))
 
 ```
 
-#### build the confusion matrix and display that as the heatmap form
-#### number are shown on the heatmap
-#### xlabel = 'Predicted', ylabel = 'True'
+#### Build the confusion matrix and display that as the heatmap form
+#### Number are shown on the heatmap: xlabel = 'Predicted', ylabel = 'True'
 
 
 ```
@@ -993,7 +991,7 @@ plt.ylabel('True')
 plt.show()
 ```
 
-#### print the testing and training accuracy
+#### Print the testing and training accuracy
 ```
 nn2_test_accuracy = accuracy_score(yTest, y_predict)
 print(f"Test Accuracy: {nn2_test_accuracy * 100:.5f}%")
@@ -1006,8 +1004,8 @@ print(f"Train Accuracy: {nn2_train_accuracy * 100:.5f}%")
 ```
 
 
-### build the Random Forest Model
-#### build the Random Forest model and train the model
+### Build the Random Forest Model
+#### Build the Random Forest model and train the model
 ```
 RF_model = RandomForestClassifier(n_estimators=1000)
 RF_model.fit(scale_xTrain, yTrain)
@@ -1016,27 +1014,27 @@ dump(RF_model, 'RF.joblib')
 ```
 
 ### Evaluate the Random Forest Model
-#### do the prediction based on the model we train
+#### Do the prediction based on the model we train
 ```
 RF_model = load('RF.joblib')
 y_pred = RF_model.predict(scale_xTest)
 
 ```
 
-#### print the classification report
+#### Print the classification report
 ```
 print("Classification Report:")
 print(classification_report(yTest, y_pred))
 
 ```
 
-#### print the test accuracy
+#### Print the test accuracy
 ```
 rf_test_accuracy = accuracy_score(yTest, y_pred)
 print(f"Test Accuracy: {rf_test_accuracy * 100:.5f}%")
 ```
 
-#### print the train accuracy
+#### Print the train accuracy
 ```
 y_pred = RF_model.predict(scale_xTrain)
 rf_train_accuracy = accuracy_score(yTrain, y_pred)
@@ -1045,7 +1043,7 @@ print(f"Train Accuracy: {rf_train_accuracy * 100:.5f}%")
 
 
 ### Ensemble Model
-#### Get prediction base on NN1, NN2, Random Forest Model #### that we build
+#### Get prediction base on NN1, NN2, Random Forest Model that we build
 ```
 from sklearn.metrics import accuracy_score, classification_report
 import numpy as np
@@ -1061,9 +1059,7 @@ rf_preds_test = RF_model.predict_proba(scale_xTest)
 
 ```
 
-#### use the classification report and turn on the output_dict option,
-#### so we can access the precision score for 4 times due to the article_classifier
-#### have four types.
+#### Use the classification report and turn on the output_dict option,so we can access the precision score for 4 times due to the article_classifier have four types.
 
 ```
 # Classification report on test set to get the precisions for weighting
@@ -1078,8 +1074,7 @@ precisions_rf_test = np.array([report_rf_test[str(i)]['precision'] for i in rang
 
 
 ```
-#### weight the prediction, reshape in order to make the 
-#### multiplication success
+#### Weight the prediction, reshape in order to make the multiplication success
 
 ```
 # Use test set precisions to weight each model's predictions on both the training and test sets
@@ -1095,8 +1090,7 @@ rf_preds_test *= precisions_rf_test.reshape(1, -1)
 ```
 
 
-#### average the prediction result, and find the most confirmed 
-#### probablity on each row
+#### Average the prediction result, and find the most confirmed probablity on each row
 
 ```
 # Compute the ensemble predictions for both the training and test sets
@@ -1108,7 +1102,7 @@ ensemble_preds_train = np.argmax(ensemble_preds_train, axis=1)
 ensemble_preds_test = np.argmax(ensemble_preds_test, axis=1)
 ```
 
-#### find the training and testing accuracy
+#### Find the training and testing accuracy
 
 ```
 # Calculate the ensemble model accuracy on both the training and testing sets
@@ -1120,7 +1114,7 @@ print(f"Ensemble training accuracy: {ensemble_train_accuracy:.5f}")
 print(f"Ensemble test accuracy: {ensemble_test_accuracy:.5f}")
 ```
 
-#### print the classification report for the emsemble model training and testing set
+#### Print the classification report for the emsemble model training and testing set
 
 ```
 print("Classification Report for Training Set:")
@@ -1130,7 +1124,7 @@ print("Classification Report for Test Set:")
 print(classification_report(yTest, ensemble_preds_test))
 ```
 
-#### construct the confusion matrix base on the emsemble model training and testing set
+#### Construct the confusion matrix base on the emsemble model training and testing set
 
 ```
 confusion_matrix_train = confusion_matrix(yTrain, ensemble_preds_train)
@@ -1180,7 +1174,7 @@ TODO: Explore results of our first model, do overfitting analysis
 
 - In the Data Preprocessing & ML model.ipynb, we build 3 ensemble models, which are Simple Ensemble Model, Medium Ensemble Model, and Complex Ensemble Model. The intention for the file is to find a suitable model that we want to focus on.The Simple Ensemble Model is composed of 3 linear models (Ridge Regression). The Medium Ensemble Model is composed of 2 Neural Network Models with 1 Linear Model. The Complex Model is composed of 2 Neural Network Models with Random Forest Model. In the Data Preprocessing & ML model.ipymb, Training Accuracy: 70.28%, Testing Accuracy: 70.10%. 
 
-- In the Improved ML model.ipynb, we are focusing on the Complex Model in the Data Preprocessing & ML model.ipymb, wishing to improve the testing and training accuracy. Now, Test Accuracy: 82.95964%, Train Accuracy: 83.40048%. Previously, 
+- In the Improved ML model.ipynb, we are focusing on the Complex Model in the Data Preprocessing & ML model.ipymb, wishing to improve the testing and training accuracy. Now, Test Accuracy: 82.95964%, Train Accuracy: 83.40048%. 
 
 
 - In the Data Preprocessing & ML model.ipymb, we use the one hot encoding for the target y. Also, we only build the confusion matrix for the three models instead of building the confusion matrix for each component within a single model. The NN1 and NN2 have the same activation function with the same units in each layer. 
@@ -1189,9 +1183,10 @@ TODO: Explore results of our first model, do overfitting analysis
 
 
 
-TODO: Explore second model results, do overfitting analysis.
+### How confirm on each steps
 
-TODO: Summarize final results of model 2 (accuracy, etc).
+
+
 
 
 Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
