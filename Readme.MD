@@ -803,17 +803,73 @@ plt.show()
 
 ### Improved model
 TODO: Same thing, but explain it for our second model
-testing
+### set X and y
+#### select all columns except 'quality', 'url', 'timedelta', 'shares'
+#### target column is 'quality'
 ```
 x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
 y = new_data['quality']
+
+```
+#### apply label encoding to y
+```
 le = LabelEncoder()
 y = le.fit_transform(y)
+
+```
+#### scale the x, and then split train/test for x/y
+```
 scaler = MinMaxScaler()
 scaled_X = scaler.fit_transform(x)
 xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, random_state=42)
+
+```
+
+#### convert data type of xTrain, xTest to dataframe
+```
 scale_xTrain = pd.DataFrame(xTrain)
 scale_xTest = pd.DataFrame(xTest)
+
+```
+#### build the model with 4 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'relu' and 'softmax'
+```
+nn1 = Sequential([
+    Dense(512, activation='relu', input_dim=scale_xTrain.shape[1]),
+    Dense(128, activation='relu'),
+    Dense(64, activation='relu'),
+    Dense(4, activation='softmax'),
+])
+
+
+```
+
+#### compile and train the model
+
+```
+nn1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+history = nn1.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
+
+```
+
+#### CONTINUE
+```
+nn1.save('nn1.h5')
+
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Train Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Train Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
 
 ```
 
