@@ -809,27 +809,23 @@ plt.show()
 ```
 x = new_data.drop(columns=['quality', 'url', 'timedelta', 'shares'], axis=1)
 y = new_data['quality']
-
 ```
 #### Apply label encoding to y
 ```
 le = LabelEncoder()
 y = le.fit_transform(y)
-
 ```
 #### Scale the x, and then split train/test for x/y
 ```
 scaler = MinMaxScaler()
 scaled_X = scaler.fit_transform(x)
 xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, random_state=42)
-
 ```
 
 #### Convert data type of xTrain, xTest to dataframe
 ```
 scale_xTrain = pd.DataFrame(xTrain)
 scale_xTest = pd.DataFrame(xTest)
-
 ```
 
 ### Build the NN1 model
@@ -841,17 +837,13 @@ nn1 = Sequential([
     Dense(64, activation='relu'),
     Dense(4, activation='softmax'),
 ])
-
-
 ```
 
 #### Compile and train the model
-
 ```
 nn1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 history = nn1.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
-
 ```
 ### Train accuracy graph
 #### Extract 'accuracy' value and use that as y value
@@ -860,7 +852,6 @@ history = nn1.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
 ### Train loss graph
 #### Extract 'loss' value and use that as y value
 #### Set the name for x-axis = 'Epochs', y-axis = 'Loss'
-
 ```
 nn1.save('nn1.h5')
 
@@ -877,8 +868,6 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
 plt.show()
-
-
 ```
 
 ### Evaluate NN1 model
@@ -891,7 +880,6 @@ nn1 = load_model('nn1.h5')
 y_predict = np.argmax(nn1.predict(scale_xTest), axis=1)
 
 print(classification_report(yTest, y_predict))
-
 ```
 
 #### Build the confusion matrix and display that as the heatmap form
@@ -902,7 +890,6 @@ sns.heatmap(cf, annot=True, fmt='d', cmap='Blues')
 plt.xlabel('Predicted')
 plt.ylabel('True')
 plt.show()
-
 ```
 
 #### Print the testing and training accuracy
@@ -913,7 +900,6 @@ print(f"Test Accuracy: {nn1_test_accuracy * 100:.5f}%")
 y_predict = np.argmax(nn1.predict(scale_xTrain), axis=1)
 nn1_train_accuracy = accuracy_score(yTrain, y_predict)
 print(f"Train Accuracy: {nn1_test_accuracy * 100:.5f}%")
-
 ```
 
 
@@ -927,7 +913,6 @@ nn2 = Sequential([
     Dense(64, activation='tanh'),
     Dense(4, activation='softmax'),
 ])
-
 ```
 #### Compile and train the model
 ```
@@ -935,8 +920,6 @@ nn2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['
 
 history = nn2.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
 nn2.save('nn2.h5')
-
-
 ```
 ### Train accuracy graph
 #### Extract 'accuracy' value and use that as y value
@@ -945,7 +928,6 @@ nn2.save('nn2.h5')
 ### Train loss graph
 #### Extract 'loss' value and use that as y value
 #### Set the name for x-axis = 'Epochs', y-axis = 'Loss'
-
 
 ```
 plt.figure(figsize=(12, 4))
@@ -969,20 +951,15 @@ plt.show()
 #### Load the model we saved in the previous step
 #### Do the prediction of y based on the scale_xTest
 #### Print the classification report
-
 ```
 nn2 = load_model('nn2.h5')
 y_predict = np.argmax(nn2.predict(scale_xTest), axis=1)
 
 print(classification_report(yTest, y_predict))
-
-
 ```
 
 #### Build the confusion matrix and display that as the heatmap form
 #### Number are shown on the heatmap: xlabel = 'Predicted', ylabel = 'True'
-
-
 ```
 cf = confusion_matrix(yTest, y_predict)
 sns.heatmap(cf, annot=True, fmt='d', cmap='Blues')
@@ -992,6 +969,7 @@ plt.show()
 ```
 
 #### Print the testing and training accuracy
+
 ```
 nn2_test_accuracy = accuracy_score(yTest, y_predict)
 print(f"Test Accuracy: {nn2_test_accuracy * 100:.5f}%")
@@ -999,8 +977,6 @@ print(f"Test Accuracy: {nn2_test_accuracy * 100:.5f}%")
 y_predict = np.argmax(nn2.predict(scale_xTrain), axis=1)
 nn2_train_accuracy = accuracy_score(yTrain, y_predict)
 print(f"Train Accuracy: {nn2_train_accuracy * 100:.5f}%")
-
-
 ```
 
 
@@ -1010,7 +986,6 @@ print(f"Train Accuracy: {nn2_train_accuracy * 100:.5f}%")
 RF_model = RandomForestClassifier(n_estimators=1000)
 RF_model.fit(scale_xTrain, yTrain)
 dump(RF_model, 'RF.joblib')
-
 ```
 
 ### Evaluate the Random Forest Model
@@ -1018,14 +993,12 @@ dump(RF_model, 'RF.joblib')
 ```
 RF_model = load('RF.joblib')
 y_pred = RF_model.predict(scale_xTest)
-
 ```
 
 #### Print the classification report
 ```
 print("Classification Report:")
 print(classification_report(yTest, y_pred))
-
 ```
 
 #### Print the test accuracy
@@ -1056,7 +1029,6 @@ rf_preds_train = RF_model.predict_proba(scale_xTrain)
 nn1_preds_test = nn1.predict(scale_xTest)
 nn2_preds_test = nn2.predict(scale_xTest)
 rf_preds_test = RF_model.predict_proba(scale_xTest)
-
 ```
 
 #### Use the classification report and turn on the output_dict option,so we can access the precision score for 4 times due to the article_classifier have four types.
@@ -1071,11 +1043,8 @@ report_rf_test = classification_report(yTest, RF_model.predict(scale_xTest), out
 precisions_nn1_test = np.array([report_nn1_test[str(i)]['precision'] for i in range(4)])
 precisions_nn2_test = np.array([report_nn2_test[str(i)]['precision'] for i in range(4)])
 precisions_rf_test = np.array([report_rf_test[str(i)]['precision'] for i in range(4)])
-
-
 ```
 #### Weight the prediction, reshape in order to make the multiplication success
-
 ```
 # Use test set precisions to weight each model's predictions on both the training and test sets
 nn1_preds_train *= precisions_nn1_test.reshape(1, -1)
@@ -1085,13 +1054,10 @@ rf_preds_train *= precisions_rf_test.reshape(1, -1)
 nn1_preds_test *= precisions_nn1_test.reshape(1, -1)
 nn2_preds_test *= precisions_nn2_test.reshape(1, -1)
 rf_preds_test *= precisions_rf_test.reshape(1, -1)
-
-
 ```
 
 
 #### Average the prediction result, and find the most confirmed probablity on each row
-
 ```
 # Compute the ensemble predictions for both the training and test sets
 ensemble_preds_train = (nn1_preds_train + nn2_preds_train + rf_preds_train) / 3
@@ -1103,7 +1069,6 @@ ensemble_preds_test = np.argmax(ensemble_preds_test, axis=1)
 ```
 
 #### Find the training and testing accuracy
-
 ```
 # Calculate the ensemble model accuracy on both the training and testing sets
 ensemble_train_accuracy = accuracy_score(yTrain, ensemble_preds_train)
@@ -1115,7 +1080,6 @@ print(f"Ensemble test accuracy: {ensemble_test_accuracy:.5f}")
 ```
 
 #### Print the classification report for the emsemble model training and testing set
-
 ```
 print("Classification Report for Training Set:")
 print(classification_report(yTrain, ensemble_preds_train))
@@ -1125,7 +1089,6 @@ print(classification_report(yTest, ensemble_preds_test))
 ```
 
 #### Construct the confusion matrix base on the emsemble model training and testing set
-
 ```
 confusion_matrix_train = confusion_matrix(yTrain, ensemble_preds_train)
 confusion_matrix_test = confusion_matrix(yTest, ensemble_preds_test)
