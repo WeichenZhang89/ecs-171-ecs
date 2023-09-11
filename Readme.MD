@@ -1135,12 +1135,11 @@ TODO: Explore results of our first model, do overfitting analysis
 
 ### Difference between Data Preprocessing & ML model.ipynb/Original Models and  Improved ML model.ipynb/Improved Model
 
-- In the Data Preprocessing & ML model.ipynb, we build 3 ensemble models, which are Simple Ensemble Model, Medium Ensemble Model, and Complex Ensemble Model. The intention for the file is to find a suitable model that we want to focus on.The Simple Ensemble Model is composed of 3 linear models (Ridge Regression). The Medium Ensemble Model is composed of 2 Neural Network Models with 1 Linear Model. The Complex Model is composed of 2 Neural Network Models with Random Forest Model. In the Data Preprocessing & ML model.ipymb, Training Accuracy: 70.28%, Testing Accuracy: 70.10%. 
+- In the Data Preprocessing & ML model. ipynb, we build 3 ensemble models, which are the Simple Ensemble Model, Medium Ensemble Model, and Complex Ensemble Model. The intention of the file is to find a suitable model that we want to focus on. The Simple Ensemble Model is composed of 3 linear models (Ridge Regression). The Medium Ensemble Model is composed of 2 Neural Network Models with 1 Linear Model. The Complex Model is composed of 2 Neural Network Models with a Random Forest Model. In the Data Preprocessing & ML model. ipynb, Training Accuracy: 70.28%, Testing Accuracy: 70.10%. 
 
-- In the Improved ML model.ipynb, we are focusing on the Complex Model in the Data Preprocessing & ML model.ipymb, wishing to improve the testing and training accuracy. Now, Test Accuracy: 82.95964%, Train Accuracy: 83.40048%. 
+- In the Improved ML model.ipynb, we are focusing on the Complex Model in the Data Preprocessing & ML model.ipynb, wishing to improve the testing and training accuracy. Now, Test Accuracy is 82.95964%, Train Accuracy is 83.40048%. 
 
-
-- In the Data Preprocessing & ML model.ipymb, we use the one hot encoding for the target y. Also, we only build the confusion matrix for the three models instead of building the confusion matrix for each component within a single model. The NN1 and NN2 have the same activation function with the same units in each layer. 
+- In the Data Preprocessing & ML model.ipynb, we use the one-hot encoding for the target y. Also, we only build the confusion matrix for the three models instead of building the confusion matrix for each component within a single model. The NN1 and NN2 have the same activation function with the same units in each layer. 
 
 - In the Improved ML model.ipynb, we use label encoding for the target y. Plus, we build three confusion matrices for each component: 2 Neural Network Models with 1 Random Forest Model. The NN1 and NN2 have different activation functions with the different units in each layer. 
 
@@ -1156,11 +1155,11 @@ TODO: Explore results of our first model, do overfitting analysis
 
 <img src = "improve_model_images/nn1_confusion_matrix.png">
 
-- The heatmap for the Neural Network 2, the diagonal line of the graph is mostly the darker blue, the numbers are similar to Neural Network 1, since we change the number of units at each layer. The lowest TRUE POSITIVE is class 2, but the lowest precision switches to class 1. That indicates the changing of units number at each layer does affect the performance of models. Test Accuracy: 64.32175%, Train Accuracy: 65.26994%. 
+- The heatmap for the Neural Network 2, the diagonal line of the graph is mostly the darker blue, the numbers are similar to Neural Network 1, since we change the number of units at each layer. The lowest TRUE POSITIVE is class 2, but the lowest precision switches to class 1. That indicates the changing of units number at each layer does affect the performance of models. Test Accuracy is 64.32175%, Train Accuracy is 65.26994%. 
 
 <img src = "improve_model_images/nn2_confusion_matrix.png">
 
-- Compared to the original Random Forest model construction in Data Preprocessing & ML model.ipynb, the number of trees is 100, now we increase to 1000 in Improved ML model.ipynb. The lowest precision is Class 3. Test Accuracy: 82.95964%, Train Accuracy: 83.40048%, which are the highest accuracy in the 3 components for the improved model. 
+- Compared to the original Random Forest model construction in Data Preprocessing & ML model.ipynb, the number of trees is 100, now we increase to 1000 in Improved ML model.ipynb. The lowest precision is Class 3. Test Accuracy is 82.95964%, Train Accuracy is 83.40048%, which are the highest accuracy in the 3 components for the improved model. 
 
 - Finally, we ensemble three components of the improved model, so we could make the model more accurate for each class. 
 
