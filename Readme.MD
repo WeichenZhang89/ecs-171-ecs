@@ -1375,7 +1375,7 @@ By using StratifiedKFold, we ensure a fair representation of each label in every
 
 
 #### Evaluating the Models with Stratified KFold
-we create a complex ensemble method that combines predictions from two neural network models and a Random Forest model to potentially enhance our prediction accuracy. We aim to exploit the diverse strengths of different models and alleviate their individual weaknesses through an ensemble.
+We create a complex ensemble method that combines predictions from two neural network models and a Random Forest model to potentially enhance our prediction accuracy. We aim to exploit the diverse strengths of different models and alleviate their individual weaknesses through an ensemble.
 
 In 'complex_ensemble_accuracy' , for each fold (there are five in total), we predict the class probabilities for both training and testing sets using our three models. We then calculate the average of these predictions to obtain the ensemble's combined prediction. To determine the ensemble's decision for a particular instance, we identify the class with the highest combined probability. The accuracy of the ensemble predictions is then computed for both the training and test sets and stored in respective lists:
 ```
