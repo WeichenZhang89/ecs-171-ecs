@@ -802,7 +802,7 @@ plt.show()
 
 
 ### Improved model
-TODO: Same thing, but explain it for our second model
+
 ### set X and y
 #### select all columns except 'quality', 'url', 'timedelta', 'shares'
 #### target column is 'quality'
@@ -831,6 +831,8 @@ scale_xTrain = pd.DataFrame(xTrain)
 scale_xTest = pd.DataFrame(xTest)
 
 ```
+
+### Build the NN1 model
 #### build the model with 4 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'relu' and 'softmax'
 ```
 nn1 = Sequential([
@@ -851,8 +853,14 @@ nn1.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['
 history = nn1.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
 
 ```
+### train accuracy graph
+#### extract 'accuracy' value and use that as y value
+#### set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
 
-#### CONTINUE
+### train loss graph
+#### extract 'loss' value and use that as y value
+#### set the name for x-axis = 'Epochs', y-axis = 'Loss'
+
 ```
 nn1.save('nn1.h5')
 
@@ -872,6 +880,8 @@ plt.show()
 
 
 ```
+
+### Evaluate NN1 model
 
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
