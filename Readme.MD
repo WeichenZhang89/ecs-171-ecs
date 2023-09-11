@@ -882,6 +882,40 @@ plt.show()
 ```
 
 ### Evaluate NN1 model
+#### load the model we saved in the previous step
+#### do the prediction of y based on the scale_xTest
+#### print the classification report
+```
+import seaborn as sns
+nn1 = load_model('nn1.h5')
+y_predict = np.argmax(nn1.predict(scale_xTest), axis=1)
+
+print(classification_report(yTest, y_predict))
+
+```
+
+#### build the confusion matrix and display that as the heatmap form
+#### number are shown on the heatmap
+#### xlabel = 'Predicted', ylabel = 'True'
+```
+cf = confusion_matrix(yTest, y_predict)
+sns.heatmap(cf, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
+
+```
+
+#### print the testing and training accuracy
+```
+nn1_test_accuracy = accuracy_score(yTest, y_predict)
+print(f"Test Accuracy: {nn1_test_accuracy * 100:.5f}%")
+
+y_predict = np.argmax(nn1.predict(scale_xTrain), axis=1)
+nn1_train_accuracy = accuracy_score(yTrain, y_predict)
+print(f"Train Accuracy: {nn1_test_accuracy * 100:.5f}%")
+
+```
 
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
