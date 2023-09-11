@@ -1127,7 +1127,312 @@ Note: Just reporting the results will be good enough. I think the analysis is su
 
 ## Discussion
 ### Discussion for Original MODEL
-TODO: Repeat the Methods & Results section, but explain the reasoning behind each section. 
+#### Preprocessing and Visualizing the Input Data
+We use the 'MinMaxScaler' to normalize our dataset, ensuring that all features have the same scale. After scaling, we split our data into training and testing sets, retaining 20% for testing. We then check the range of our scaled training data to ensure consistency. Finally, we visualize the distribution of our scaled training data using histograms for each column to gain insights into its distribution:
+```
+scaler = MinMaxScaler()
+scaled_X = scaler.fit_transform(x)
+
+xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, random_state=10)
+
+print("range of the xTrain:")
+print(xTrain.max() - xTrain.min())
+
+scale_xTrain = pd.DataFrame(xTrain)
+scale_xTest = pd.DataFrame(xTest)
+for i in scale_xTrain.columns:
+    plt.hist(xTrain[i])
+plt.title("Histogram of scale_xTrain")
+plt.show()
+```
+
+#### Setting Up the Nerual Networks and Random Forest Components
+We start by defining a function 'build_nn_model' that is responsible for constructing a neural network model for us. This function takes two primary inputs: the shape of our input data (input_shape) and the number of class categories we have in our dataset (num_classes). The model we build is sequential, meaning the data flows through it in a linear fashion from input to output. Inside the model, we first add a dense layer with 128 neurons and a 'ReLU' activation function, using the input_shape as the shape of the input data. The 'ReLU' activation function helps introduce non-linearity into the model and is popular due to its efficiency and performance. We then follow up with two additional dense layers having 64 and 32 neurons respectively, both with the 'ReLU' activation function. These additional layers increase the model's capacity to learn complex patterns from the data.The final layer in our model has a number of neurons equal to num_classes, which is the number of categories we're predicting. We use the 'softmax' activation function in this layer because it's well-suited for multiclass classification tasks. It ensures the output values are between 0 and 1 and sum up to 1, which can be interpreted as class probabilities. After defining the structure of our model, we compile it. We choose the 'adam' optimizer due to its efficiency and widespread use in deep learning tasks. Our loss function is categorical_crossentropy which is suitable for multiclass classification. We also decide to track the 'accuracy' metric during training to understand how well our model is performing:
+```
+def build_nn_model(input_shape, num_classes):
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.Dense(128, activation='relu', input_shape=input_shape),
+        tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dense(32, activation='relu'),
+        tf.keras.layers.Dense(num_classes, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    return model
+```
+
+Having defined how to build our model, we then employ TensorFlow's 'MirroredStrategy' that allows us to harness the power of multiple GPUs, should they be available. It mirrors the model's variables across all the processors, then each processor calculates the gradients for one slice of the input data. Essentially, it helps us scale our training process and potentially achieve faster training times.
+```
+mirror_strategy = tf.distribute.MirroredStrategy()
+```
+
+Within the scope of this strategy, we build two instances of our neural network model using the shape of our training data and the number of class categories. Next, we create a TensorFlow dataset from our training data and labels, 'fit_speed'. We want our model to see the data multiple times, so we use 'repeat()'. We also decide to train our model using batches of 100 samples at a time, which is why we employ 'batch(100)'.Finally, we train both our neural network models using the fit method for 10 epochs. This means each model will see the entire dataset 10 times during training.
+```
+with mirror_strategy.scope():
+    nn_model1 = build_nn_model(scale_xTrain.shape[1:], yTrain.shape[1])
+    nn_model2 = build_nn_model(scale_xTrain.shape[1:], yTrain.shape[1])
+
+    fit_speed = tf.data.Dataset.from_tensor_slices((scale_xTrain, yTrain))
+    fit_speed = fit_speed.repeat().batch(100)
+
+    nn_model1.fit(scale_xTrain, yTrain, epochs=10)
+    nn_model2.fit(scale_xTrain, yTrain, epochs=10)
+```
+
+We initialize a Random Forest classifier. Specifically, we choose the RandomForestClassifier and set the number of trees ('n_estimators') in the forest to 100. By using a hundred trees, we aim to harness the power of ensemble learning, where predictions from multiple trees are aggregated to give a final prediction, thereby potentially improving the model's accuracy and robustness. After initializing the classifier, we proceed to train it using our scaled training dataset, 'scale_xTrain'. To match the classifier's expectations for the target values, we convert our one-hot encoded target labels 'yTrain' back to their integer representation using the argmax function along the second axis (axis=1). By doing so, we ensure that each training example has a single integer label that represents its class:
+```
+RF_model = RandomForestClassifier(n_estimators=100)
+RF_model.fit(scale_xTrain, yTrain.argmax(axis=1))
+```
+
+ We countinue to predict class probabilities for both our training and test datasets using three distinct models. Initially, we employ our first neural network model, 'nn_model1', to predict the class probabilities for the training data, storing these predictions in 'nn1_train_pred'. Simultaneously, we do the same with our second neural network model, 'nn_model2', saving its predictions in 'nn2_train_pred'. For our Random Forest model, 'RF_model', we specifically use 'predict_proba' to get the class probabilities for the training set and store them in 'RF_train_pred'. We repeat a similar process for our test data. Using 'nn_model1', 'nn_model2', and 'RF_model'. To give us an idea of the structure of our predicted probabilities, we print out the shapes of the predictions made on the training data:
+```
+nn1_train_pred = nn_model1.predict(scale_xTrain)
+nn2_train_pred = nn_model2.predict(scale_xTrain)
+RF_train_pred = RF_model.predict_proba(scale_xTrain)
+
+nn1_test_pred = nn_model1.predict(scale_xTest)
+nn2_test_pred = nn_model2.predict(scale_xTest)
+RF_test_pred = RF_model.predict_proba(scale_xTest)
+
+print("Shape:")
+print("nn1_train_pred:", nn1_train_pred.shape)
+print("nn2_train_pred:", nn2_train_pred.shape)
+print("RF_train_pred:", RF_train_pred.shape)
+```
+
+Next, we want to convert these class probabilities into actual class labels. This is achieved by finding the index (or position) of the highest probability for each sample. The 'argmax' function accomplishes this for us. We convert the probabilities to labels for both the training and test predictions of all three models:
+```
+nn1_train_labels = nn1_train_pred.argmax(axis=1)
+nn2_train_labels = nn2_train_pred.argmax(axis=1)
+RF_train_labels = RF_train_pred.argmax(axis=1)
+
+nn1_test_labels = nn1_test_pred.argmax(axis=1)
+nn2_test_labels = nn2_test_pred.argmax(axis=1)
+RF_test_labels = RF_test_pred.argmax(axis=1)
+```
+
+Finally, we print these class labels for further inspection, providing us with a comprehensive view of our models' performance on both the training and test data sets. This is crucial as it allows us to evaluate how well our models are predicting and whether they are consistent in their predictions across different datasets:
+```
+print("Labels:")
+print("nn1_train_pred:", nn1_train_labels)
+print("nn2_train_pred:", nn2_train_labels)
+print("RF_train_pred:", RF_train_labels)
+print("nn1_test_pred:", nn1_test_labels)
+print("nn2_test_pred:", nn2_test_labels)
+print("RF_test_pred:", RF_test_labels)
+print()
+```
+
+#### Ensemble Models
+##### The Simple Ensemble Model
+We decide to experiment with Ridge regression for the simple model, which is a linear regression model with L2 regularization, and the reason behind using regularization like Ridge is to prevent overfitting and keep our model general enough for unseen data.
+
+Initially, we set up three Ridge regression models, 'linmodel_1', 'linmodel_2', and 'linmodel_3', with different levels of regularization strength, as indicated by the alpha values. The choice of these values enables us to examine how varying the regularization strength impacts the model's performance. We then train each model on the scaled training data 'scale_xTrain' and 'yTrain':
+```
+linmodel_1 = Ridge(alpha=0.01)
+linmodel_2 = Ridge(alpha=0.3)
+linmodel_3 = Ridge(alpha=0.5)
+
+linmodel_1.fit(scale_xTrain, yTrain)
+linmodel_2.fit(scale_xTrain, yTrain)
+linmodel_3.fit(scale_xTrain, yTrain)
+```
+
+Subsequently, we proceed to predict the outcomes for both our training and test sets using each of these models. This helps us evaluate how well each individual model with its specific regularization parameter performs on both seen and unseen data:
+```
+linmodel1_train_pred = linmodel_1.predict(scale_xTrain)
+linmodel2_train_pred = linmodel_2.predict(scale_xTrain)
+linmodel3_train_pred = linmodel_3.predict(scale_xTrain)
+```
+
+Recognizing the power of ensemble methods, we then decide to combine the predictions of these three Ridge models. We achieve this by simply averaging their predictions. The idea here is that by combining the strengths of multiple models, we can potentially produce more robust and accurate predictions. And finally, we convert our ensemble predictions into class labels by finding the index (or class) with the highest predicted value using the argmax function. This step is essential as it allows us to evaluate the ensemble's classification performance and compare it against other models or baselines we might have in our study:
+```
+ensemble_simple_train_pred = (linmodel1_train_pred + linmodel2_train_pred + linmodel3_train_pred) / 3
+ensemble_simple_test_pred = (linmodel1_test_pred + linmodel2_test_pred + linmodel3_test_pred) / 3
+ensemble_simple_train_labels = ensemble_simple_train_pred.argmax(axis=1)
+ensemble_simple_test_labels = ensemble_simple_test_pred.argmax(axis=1)
+```
+
+We use a confusion matrix and classification report to evaluate the performance of our machine learning models for several crucial reasons:
+
+Firstly, accuracy alone is often not sufficient to gauge the performance of a classification model, especially if our dataset is imbalanced. The confusion matrix provides us with a detailed breakdown of true positives, false positives, true negatives, and false negatives, allowing us to compute additional metrics such as precision, recall, and F1-score. These metrics give us a fuller picture of how well the model is identifying each class and how often it makes mistakes.
+
+Secondly, the classification report provides us with these very metrics—precision, recall, F1-score, and support (number of instances for each label)—grouped by each class. This allows us to quickly identify which classes the model is good at predicting and which ones need improvement. It even handles cases where there are no instances of a certain class in a test set, by providing the zero_division parameter, making the report robust to all scenarios.
+
+Thirdly, the confusion matrix and classification report are visual and tabular ways of presenting model performance, respectively. The heatmap of the confusion matrix, plotted using Seaborn, adds a visual layer to the evaluation, helping us to quickly recognize patterns or imbalances in the model’s predictions.
+```
+yTrain_labels = yTrain.argmax(axis=1)
+cf1 = confusion_matrix(yTrain_labels, ensemble_simple_train_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Training Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+
+yTest_labels = yTest.argmax(axis=1)
+cf1 = confusion_matrix(yTest_labels, ensemble_simple_test_labels)
+sns.heatmap(cf1, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix for Testing Set')
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()
+```
+
+When we calculate the accuracies for individual components (here Ridge Regression models with varying levels of regularization) and the ensemble, we are essentially looking to quantify how well each model has learned to make predictions from the data. Accuracy is a straightforward metric that tells us what percentage of the predictions are correct. It's critical to check this metric on both the training and test sets to see if the model is learning the general patterns in the data or if it's just memorizing the training data. For ensemble models, the goal is often to combine the strengths of individual models to achieve a higher overall accuracy. By calculating the ensemble's accuracy, we can see if this goal is achieved. If the ensemble performs substantially better than the individual models, it's a good indicator that combining the models was beneficial:
+```
+lin1_train_labels = linmodel1_train_pred.argmax(axis=1)
+lin2_train_labels = linmodel2_train_pred.argmax(axis=1)
+lin3_train_labels = linmodel3_train_pred.argmax(axis=1)
+
+lin1_test_labels = linmodel1_test_pred.argmax(axis=1)
+lin2_test_labels = linmodel2_test_pred.argmax(axis=1)
+lin3_test_labels = linmodel3_test_pred.argmax(axis=1)
+
+lin1_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin1_train_labels)
+lin2_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin2_train_labels)
+lin3_train_accuracy = accuracy_score(yTrain.argmax(axis=1), lin3_train_labels)
+
+lin1_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin1_test_labels)
+lin2_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin2_test_labels)
+lin3_test_accuracy = accuracy_score(yTest.argmax(axis=1), lin3_test_labels)
+
+ensemble_simple_train_accuracy = accuracy_score(yTrain.argmax(axis=1), ensemble_simple_train_labels)
+ensemble_simple_test_accuracy = accuracy_score(yTest.argmax(axis=1), ensemble_simple_test_labels)
+
+if ensemble_simple_test_accuracy > ensemble_simple_train_accuracy:
+    print("There could be overfitting.")
+else:
+    print("There should be no overfitting.")
+```
+
+##### The Medium Ensemble Model and The Complex Ensemble Model
+For the medium ensemble model and the complex ensemble model, we use the test and evaluation process identical to the one described above for simple models. Therefore, we will not go into more detail on this part, but rather focus on what follows.
+
+#### Applying Stratified KFold
+When we deal with datasets, especially those containing labels that are imbalanced in their distribution, ensuring that each fold is a representative sample of the entire dataset becomes paramount. This is where the concept of stratified sampling comes into play, and it's the reason we apply StratifiedKFold.
+
+With StratifiedKFold, we are making an effort to ensure that each fold retains the same proportion of observations with a given categorical label as the entire set. By doing this, we're trying to avoid scenarios where, due to random sampling, one fold may end up with too many of a certain label, making the training and validation biased.
+
+Firstly, we initialize six empty lists, intending to store trained models of two neural networks ('nn1_models', 'nn2_models'), a random forest ('rf_models'), and three different Ridge regression models ('ridge1_models', 'ridge2_models', 'ridge3_models').
+```
+nn1_models, nn2_models, rf_models, ridge1_models, ridge2_models, ridge3_models = [], [], [], [], [], []
+```
+
+We then define an instance of StratifiedKFold with 5 splits. The rationale behind choosing 5 splits, typically, is to ensure that we have enough data in each split for training and validating the models while also ensuring that we have a reasonable number of iterations for cross-validation. Also, we employ tf.distribute.MirroredStrategy() for our neural networks. We use this strategy because it allows us to utilize multiple GPUs for training, if available, ensuring faster training times and more efficient hardware utilization:
+```
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=10)
+mirror_strategy = tf.distribute.MirroredStrategy()
+```
+
+The for loop indicates that for each fold produced by StratifiedKFold, we perform the following steps:
+1. Split the data into training and validation sets.
+2. Scale the data using MinMaxScaler, ensuring that we only use scaling parameters from the training set to transform the validation set. This is crucial to prevent data leakage.
+3. Within the distributed training strategy (mirror_strategy.scope()), build and train two neural network models. This ensures we utilize all available GPU resources.
+4. Outside of the distributed scope, train a Random Forest classifier.
+5. Proceed to train three Ridge regression models with varying regularization strengths.
+6.  Store each trained model into its respective list for potential later use or evaluation.
+```
+for train_index, test_index in skf.split(x, y.argmax(axis=1)):
+    xTrain_fold, xTest_fold = x.iloc[train_index].values, x.iloc[test_index].values
+    yTrain_fold, yTest_fold = y[train_index], y[test_index]
+
+    # Scale data after splitting
+    scaler = MinMaxScaler()
+    xTrain_fold = scaler.fit_transform(xTrain_fold)
+    xTest_fold = scaler.transform(xTest_fold)  # Important: transform only using the train data scaling parameters
+
+    # Neural Network Training within the mirror_strategy scope
+    with mirror_strategy.scope():
+        nn_model1 = build_nn_model(xTrain_fold.shape[1:], yTrain_fold.shape[1])
+        nn_model2 = build_nn_model(xTrain_fold.shape[1:], yTrain_fold.shape[1])
+
+        nn_model1.fit(xTrain_fold, yTrain_fold, epochs=10, verbose=0)
+        nn_model2.fit(xTrain_fold, yTrain_fold, epochs=10, verbose=0)
+
+    # Random Forest Training
+    RF_model = RandomForestClassifier(n_estimators=100)
+    RF_model.fit(xTrain_fold, yTrain_fold.argmax(axis=1))
+
+    # Ridge Regression Training
+    linmodel_1 = Ridge(alpha=0.01)
+    linmodel_2 = Ridge(alpha=0.3)
+    linmodel_3 = Ridge(alpha=0.5)
+    linmodel_1.fit(xTrain_fold, yTrain_fold)
+    linmodel_2.fit(xTrain_fold, yTrain_fold)
+    linmodel_3.fit(xTrain_fold, yTrain_fold)
+
+    # Store trained models
+    nn1_models.append(nn_model1)
+    nn2_models.append(nn_model2)
+    rf_models.append(RF_model)
+    ridge1_models.append(linmodel_1)
+    ridge2_models.append(linmodel_2)
+    ridge3_models.append(linmodel_3)
+```
+
+By using StratifiedKFold, we ensure a fair representation of each label in every fold, thereby mitigating the risk of biased training and validation splits. Through this structured training approach, we train multiple models across each fold to robustly evaluate their performances.
+
+
+#### Evaluating the Models with Stratified KFold
+we create a complex ensemble method that combines predictions from two neural network models and a Random Forest model to potentially enhance our prediction accuracy. We aim to exploit the diverse strengths of different models and alleviate their individual weaknesses through an ensemble.
+
+In 'complex_ensemble_accuracy' , for each fold (there are five in total), we predict the class probabilities for both training and testing sets using our three models. We then calculate the average of these predictions to obtain the ensemble's combined prediction. To determine the ensemble's decision for a particular instance, we identify the class with the highest combined probability. The accuracy of the ensemble predictions is then computed for both the training and test sets and stored in respective lists:
+```
+def complex_ensemble_accuracy(nn1_models, nn2_models, rf_models):
+
+    train_accuracies = []
+    test_accuracies = []
+
+    for i in range(5):
+        # Train metrics
+        nn1_train_pred = nn1_models[i].predict(scale_xTrain)
+        nn2_train_pred = nn2_models[i].predict(scale_xTrain)
+        RF_train_pred = rf_models[i].predict_proba(scale_xTrain)
+
+        ensemble_train_pred = (nn1_train_pred + nn2_train_pred + RF_train_pred) / 3
+        ensemble_train_labels = ensemble_train_pred.argmax(axis=1)
+
+        train_acc = accuracy_score(yTrain.argmax(axis=1), ensemble_train_labels)
+        train_accuracies.append(train_acc)
+
+        # Test metrics
+        nn1_test_pred = nn1_models[i].predict(scale_xTest)
+        nn2_test_pred = nn2_models[i].predict(scale_xTest)
+        RF_test_pred = rf_models[i].predict_proba(scale_xTest)
+
+        ensemble_test_pred = (nn1_test_pred + nn2_test_pred + RF_test_pred) / 3
+        ensemble_test_labels = ensemble_test_pred.argmax(axis=1)
+
+        test_acc = accuracy_score(yTest.argmax(axis=1), ensemble_test_labels)
+        test_accuracies.append(test_acc)
+
+    return train_accuracies, test_accuracies
+```
+
+Outside the function, we compute the average accuracy across all five folds for both training and testing datasets. These averages provide a general measure of how well our ensemble method is performing on unseen data. Andwe visualize our results with a line plot that contrasts the training and test accuracies across all folds. This visualization aids us in understanding any potential discrepancies between training and test performance, which could hint at issues like overfitting. By analyzing this graph, we can make informed decisions about any necessary adjustments to our ensemble or its constituent models:
+```
+# Compute average train and test accuracies for the complex ensemble
+complex_ensemble_train_acc, complex_ensemble_test_acc = complex_ensemble_accuracy(nn1_models, nn2_models, rf_models)
+
+#Avearage of train and test accuracies
+avg_train_acc = np.mean(complex_ensemble_train_acc)
+avg_test_acc = np.mean(complex_ensemble_test_acc)
+
+print("Complex Ensemble Model:")
+print(f"Training Accuracy: {avg_train_acc:.4f}")
+print(f"Testing Accuracy: {avg_test_acc:.4f}")
+
+#Plot train against test acc across the folds
+plt.plot(complex_ensemble_train_acc, label='Training Accuracy')
+plt.plot(complex_ensemble_test_acc, label='Test Accuracy')
+plt.title('Training and Test Accuracy for Complex Ensemble with 2NN + 1RF')
+plt.xlabel('Folds')
+plt.xticks(list(range(5)), [f"{i+1}" for i in range(5)])
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+```
 
 TODO: Explore results of our first model, do overfitting analysis
 
