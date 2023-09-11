@@ -1078,7 +1078,22 @@ precisions_rf_test = np.array([report_rf_test[str(i)]['precision'] for i in rang
 
 
 ```
-#### CONTINUE
+#### weight the prediction, reshape in order to make the 
+multiplication success
+
+```
+# Use test set precisions to weight each model's predictions on both the training and test sets
+nn1_preds_train *= precisions_nn1_test.reshape(1, -1)
+nn2_preds_train *= precisions_nn2_test.reshape(1, -1)
+rf_preds_train *= precisions_rf_test.reshape(1, -1)
+
+nn1_preds_test *= precisions_nn1_test.reshape(1, -1)
+nn2_preds_test *= precisions_nn2_test.reshape(1, -1)
+rf_preds_test *= precisions_rf_test.reshape(1, -1)
+```
+
+
+
 
 ```
 # Use test set precisions to weight each model's predictions on both the training and test sets
