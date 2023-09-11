@@ -917,6 +917,182 @@ print(f"Train Accuracy: {nn1_test_accuracy * 100:.5f}%")
 
 ```
 
+
+### Build the NN2 model
+#### build the model with 5 layers, input dimension correspond to scale_xTrain, 2 types of activation functions used are 'tanh' and 'softmax'
+```
+nn2 = Sequential([
+    Dense(512, activation='tanh', input_dim=scale_xTrain.shape[1]),
+    Dense(256, activation='tanh'),
+    Dense(128, activation='tanh'),
+    Dense(64, activation='tanh'),
+    Dense(4, activation='softmax'),
+])
+
+```
+#### compile and train the model
+```
+nn2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+history = nn2.fit(scale_xTrain, yTrain, epochs=100, batch_size=32)
+nn2.save('nn2.h5')
+
+
+```
+### train accuracy graph
+#### extract 'accuracy' value and use that as y value
+#### set the name for x-axis = 'Epochs', y-axis = 'Accuracy'
+
+### train loss graph
+#### extract 'loss' value and use that as y value
+#### set the name for x-axis = 'Epochs', y-axis = 'Loss'
+
+
+```
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Train Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Train Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+```
+
+
+### Evaluate NN2 model
+#### load the model we saved in the previous step
+#### do the prediction of y based on the scale_xTest
+#### print the classification report
+
+```
+nn2 = load_model('nn2.h5')
+y_predict = np.argmax(nn2.predict(scale_xTest), axis=1)
+
+print(classification_report(yTest, y_predict))
+
+
+```
+
+#### build the confusion matrix and display that as the heatmap form
+#### number are shown on the heatmap
+#### xlabel = 'Predicted', ylabel = 'True'
+
+
+```
+cf = confusion_matrix(yTest, y_predict)
+sns.heatmap(cf, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
+```
+
+#### print the testing and training accuracy
+```
+nn2_test_accuracy = accuracy_score(yTest, y_predict)
+print(f"Test Accuracy: {nn2_test_accuracy * 100:.5f}%")
+
+y_predict = np.argmax(nn2.predict(scale_xTrain), axis=1)
+nn2_train_accuracy = accuracy_score(yTrain, y_predict)
+print(f"Train Accuracy: {nn2_train_accuracy * 100:.5f}%")
+
+
+```
+
+
+### build the Random Forest Model
+#### build the Random Forest model and train the model
+```
+RF_model = RandomForestClassifier(n_estimators=1000)
+RF_model.fit(scale_xTrain, yTrain)
+dump(RF_model, 'RF.joblib')
+
+```
+
+### Evaluate the Random Forest Model
+#### do the prediction based on the model we train
+```
+RF_model = load('RF.joblib')
+y_pred = RF_model.predict(scale_xTest)
+
+```
+
+#### print the classification report
+```
+print("Classification Report:")
+print(classification_report(yTest, y_pred))
+
+```
+
+#### print the test accuracy
+```
+rf_test_accuracy = accuracy_score(yTest, y_pred)
+print(f"Test Accuracy: {rf_test_accuracy * 100:.5f}%")
+```
+
+#### print the train accuracy
+```
+y_pred = RF_model.predict(scale_xTrain)
+rf_train_accuracy = accuracy_score(yTrain, y_pred)
+print(f"Train Accuracy: {rf_train_accuracy * 100:.5f}%")
+```
+
+
+### Ensemble Model
+#### Get prediction base on NN1, NN2, Random Forest Model #### that we build
+```
+from sklearn.metrics import accuracy_score, classification_report
+import numpy as np
+
+# Get predictions for each model on the training and test set
+nn1_preds_train = nn1.predict(scale_xTrain)
+nn2_preds_train = nn2.predict(scale_xTrain)
+rf_preds_train = RF_model.predict_proba(scale_xTrain)
+
+nn1_preds_test = nn1.predict(scale_xTest)
+nn2_preds_test = nn2.predict(scale_xTest)
+rf_preds_test = RF_model.predict_proba(scale_xTest)
+
+```
+
+#### use the classification report and turn on the output_dict option,
+#### so we can access the precision score for 4 times due to the article_classifier
+#### have four types.
+
+```
+# Classification report on test set to get the precisions for weighting
+report_nn1_test = classification_report(yTest, np.argmax(nn1.predict(scale_xTest), axis=1), output_dict=True)
+report_nn2_test = classification_report(yTest, np.argmax(nn2.predict(scale_xTest), axis=1), output_dict=True)
+report_rf_test = classification_report(yTest, RF_model.predict(scale_xTest), output_dict=True)
+
+# Get precisions for each class on the test set
+precisions_nn1_test = np.array([report_nn1_test[str(i)]['precision'] for i in range(4)])
+precisions_nn2_test = np.array([report_nn2_test[str(i)]['precision'] for i in range(4)])
+precisions_rf_test = np.array([report_rf_test[str(i)]['precision'] for i in range(4)])
+
+
+```
+#### CONTINUE
+
+```
+# Use test set precisions to weight each model's predictions on both the training and test sets
+nn1_preds_train *= precisions_nn1_test.reshape(1, -1)
+nn2_preds_train *= precisions_nn2_test.reshape(1, -1)
+rf_preds_train *= precisions_rf_test.reshape(1, -1)
+
+nn1_preds_test *= precisions_nn1_test.reshape(1, -1)
+nn2_preds_test *= precisions_nn2_test.reshape(1, -1)
+rf_preds_test *= precisions_rf_test.reshape(1, -1)
+
+
+```
+
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
 
