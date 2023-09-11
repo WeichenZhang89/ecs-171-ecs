@@ -1176,7 +1176,18 @@ TODO: Explore results of our first model, do overfitting analysis
 
 ### Discussion for SECOND MODEL
 
-TODO: Explain how second model differs.
+### Difference between Data Preprocessing & ML model.ipynb/Original Models and  Improved ML model.ipynb/Improved Model
+
+In the Data Preprocessing & ML model.ipynb, we build 3 ensemble models, which are Simple Ensemble Model, Medium Ensemble Model, and Complex Ensemble Model. The intention for the file is to find a suitable model that we want to focus on.The Simple Ensemble Model is composed of 3 linear models (Ridge Regression). The Medium Ensemble Model is composed of 2 Neural Network Models with 1 Linear Model. The Complex Model is composed of 2 Neural Network Models with Random Forest Model. In the Data Preprocessing & ML model.ipymb, Training Accuracy: 70.28%, Testing Accuracy: 70.10%. 
+
+In the Improved ML model.ipynb, we are focusing on the Complex Model in the Data Preprocessing & ML model.ipymb, wishing to improve the testing and training accuracy. Now, Test Accuracy: 82.95964%, Train Accuracy: 83.40048%. Previously, 
+
+
+In the Data Preprocessing & ML model.ipymb, we use the one hot encoding for the target y. Also, we only build the confusion matrix for the three models instead of building the confusion matrix for each component within a single model. The NN1 and NN2 have the same activation function with the same units in each layer. 
+
+In the Improved ML model.ipynb, we use label encoding for the target y. Plus, we build three confusion matrices for each component: 2 Neural Network Models with 1 Random Forest Model. The NN1 and NN2 have different activation functions with the different units in each layer. 
+
+
 
 TODO: Explore second model results, do overfitting analysis.
 
