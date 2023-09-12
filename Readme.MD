@@ -1646,7 +1646,7 @@ Testing Accuracy: 0.4641
 The training accuracies for the models are hovering around 46.76%. This is consistent across the different Ridge variants, indicating that the different Ridge configurations didn't dramatically change the model's fit on the training data.
 The testing accuracies are very close to the training accuracies, around 46.42%. This suggests the models are generalizing fairly well to unseen data. The fact that the difference between training and testing accuracy is minimal means there's low variance, and overfitting is less of a concern.
 
-However, there are variations, particularly the sharp drop at Fold = 2. This drop suggests that the model struggled to generalize to the validation set of this particular fold. As with the previous model, reasons could be:
+However, there are variations, particularly the sharp drop at Fold = 2. This drop suggests that the model struggle to generalize to the validation set of this particular fold. As with the previous model, reasons could be:
 1. Anomalies/Outliers: This specific fold might contain more outliers or noise.
 2. Unrepresentative Data: The data in Fold 4 = might not be well-represented by the model, possibly having unique characteristics not seen in other folds.
 3. Sampling Bias: There could have been an accidental bias when creating the folds. Maybe a certain class or a group of similar data points got clustered in this fold.
