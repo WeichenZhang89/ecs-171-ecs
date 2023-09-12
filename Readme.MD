@@ -1876,6 +1876,7 @@ Model 2 added neural networks to linear regression but only saw a slight improve
 Model 3: Ensemble of 2 Neural Network Models + 1 Random Forest Model
 * Training Accuracy: 85.30% 
 * Testing Accuracy: 45.61%
+
 Model 3 improved training accuracy significantly by adding neural networks and a Random Forest model, but leaving a great difference between training and testing accuracy, indicating overfitting. 
 
 #### Improved Model
