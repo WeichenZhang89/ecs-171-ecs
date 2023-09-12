@@ -1862,18 +1862,16 @@ The training accuracy slightly decreased in the improved model, which helps prev
 ### Summary of Models
 #### Original Models:
 Model 1: Ensemble of 3 Linear Regression Models (With Ridge Cost Function)
-   * Training Accuracy: 45.29%
-   * Testing Accuracy: 44.14%
-
+* Training Accuracy: 45.29%
+* Testing Accuracy: 44.14%
 This model is the simplest ensemble, combining three linear regression models with a ridge cost function.It had decent accuracy on training and testing but couldn't handle complex patterns.
 
 Model 2: Ensemble of 1 Linear Regression Model + 2 Neural Network Models
-   * Training Accuracy: 47.40%
-   * Testing Accuracy: 45.05%
-
+* Training Accuracy: 47.40%
+* Testing Accuracy: 45.05%
 Model 2 added neural networks to linear regression but only saw a slight improvement in testing accuracy, leaving room for further enhancement.
 
-Model 3: Ensemble of 2 Neural Network Models + 1 Random Forest Model  
+Model 3: Ensemble of 2 Neural Network Models + 1 Random Forest Model
 * Training Accuracy: 85.30% 
 * Testing Accuracy: 45.61%
 Model 3 improved training accuracy significantly by adding neural networks and a Random Forest model, but leaving a great difference between training and testing accuracy, indicating overfitting. 
