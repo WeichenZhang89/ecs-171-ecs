@@ -1611,7 +1611,18 @@ Testing Accuracy: 0.4427
 ```
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/SP3.png)
 ##### Evaluation
+The training accuracy of the ensemble model is 45.03%, and the testing accuracy is 44.27%. The close proximity of these values suggests that the model is generalizing fairly well. There isn't a vast difference between training and testing metrics, which is good as it indicates a lower likelihood of overfitting.
 
+Using K-fold validation ensures that the model gets trained and validated on different portions of the dataset in each fold. This gives a more holistic understanding of the model's performance. The relatively consistent performance across most folds (with the exception of Fold = 4) shows the model's stability.
+
+The dramatic drop in both training and testing accuracy at Fold = 4 is intriguing. It's an indication that the subset of data used in this fold is in some way different or more challenging for the model. This could arise due to several reasons:
+1. Anomalies/Outliers: This specific fold might contain more outliers or noise.
+2. Unrepresentative Data: The data in Fold 4 = might not be well-represented by the model, possibly having unique characteristics not seen in other folds.
+3. Sampling Bias: There could have been an accidental bias when creating the folds. Maybe a certain class or a group of similar data points got clustered in this fold.
+
+The return to normal performance in Fold 5 is reassuring, suggesting that the issue was isolated to just Fold = 4 and not a systematic problem with the model or data processing.
+
+Since this simple model is only used for performance comparisons, we will not discuss it in depth.
 
 #### The Medium Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1632,6 +1643,17 @@ Testing Accuracy: 0.4641
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD4.png)
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD5.png)
 ##### Evaluation
+The training accuracies for the models are hovering around 46.76%. This is consistent across the different Ridge variants, indicating that the different Ridge configurations didn't dramatically change the model's fit on the training data.
+The testing accuracies are very close to the training accuracies, around 46.42%. This suggests the models are generalizing fairly well to unseen data. The fact that the difference between training and testing accuracy is minimal means there's low variance, and overfitting is less of a concern.
+
+However, there are variations, particularly the sharp drop at Fold = 2. This drop suggests that the model struggled to generalize to the validation set of this particular fold. As with the previous model, reasons could be:
+1. Anomalies/Outliers: This specific fold might contain more outliers or noise.
+2. Unrepresentative Data: The data in Fold 4 = might not be well-represented by the model, possibly having unique characteristics not seen in other folds.
+3. Sampling Bias: There could have been an accidental bias when creating the folds. Maybe a certain class or a group of similar data points got clustered in this fold.
+
+The recovery at Fold 3 followed by slight drops suggests the model is sensitive to variations in the test set. It could also mean that there are aspects of the data that are inherently more challenging to predict.
+
+Overall, the Medium Ensemble Model with different Ridge configurations show reasonable performance, but there's room for improvement, especially in the model's ability to generalize consistently across different validation sets in the K-fold validation.
 
 #### The Complex Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1642,6 +1664,22 @@ Testing Accuracy: 0.7010
 ```
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/CP3.png)
 ##### Evaluation
+The training accuracy for this ensemble is 70.28%, and the testing accuracy is 70.10%. These numbers are close to each other, which suggests that the model is not overfitting and could generalize well to unseen data.
+
+The use of K-fold cross validation provides a more robust measure of the model's performance. The consistent performance, as indicated by the small fluctuations across the folds, confirms that the model's average performance is not a result of an anomaly or an outlier batch in the data.
+
+Both training and testing accuracies show fluctuations of about 3% across the different folds. This could be due to slight variations in the distribution of data in each fold. This level of fluctuation is not alarming and is to be expected in many real-world datasets.
+
+At Fold = 4, the training accuracy surpasses testing accuracy, but at Fold = 5, this trend is reversed. Such changes could be due to the particular nature of data samples in these folds. The reversal of the trend is interesting but not necessarily a sign of an issue since it shows the dynamic behavior of the model across different data subsets.
+
+In summary, the K-fold validation results for the complex ensemble model depict a fairly consistent and well-generalizing model. The slight variations across folds provide insight into how the model interacts with different data subsets and can be further analyzed for deeper insights or potential areas of improvement.
+
+### Improvements could be done
+While the accuracy is above 70%, there's always room for improvement. The following avenues can be explored:
+Features Improving: Enhance the current features or introduce new ones.
+Hyperparameters Tuning: Adjust model parameters for better performance.
+Models Exploration: Maybe another type of model or a different ensemble strategy could boost performance.
+
 
 ### Discussion for Improved MODEL
 
