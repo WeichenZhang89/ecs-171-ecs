@@ -1860,31 +1860,39 @@ The training accuracy slightly decreased in the improved model, which helps prev
 Summary of Models
 Original Models:
 Model 1: Ensemble of 3 Linear Regression Models (With Ridge Cost Function)
-Training Accuracy: 45.29%
-Testing Accuracy: 44.14%
+      Training Accuracy: 45.29%
+      Testing Accuracy: 44.14%
 This model is the simplest ensemble, combining three linear regression models with a ridge cost function.It had decent accuracy on training and testing but couldn't handle complex patterns.
-             Model 2: Ensemble of 1 Linear Regression Model + 2 Neural Network Models
-Training Accuracy: 47.40%
-Testing Accuracy: 45.05%
+
+Model 2: Ensemble of 1 Linear Regression Model + 2 Neural Network Models
+      Training Accuracy: 47.40%
+      Testing Accuracy: 45.05%
 Model 2 added neural networks to linear regression but only saw a slight improvement in testing accuracy, leaving room for further enhancement.
 
 
 Model 3: Ensemble of 2 Neural Network Models + 1 Random Forest Model
-Training Accuracy: 85.30%
-Testing Accuracy: 45.61%
+     Training Accuracy: 85.30%
+     Testing Accuracy: 45.61%
 Model 3 improved training accuracy significantly by adding neural networks and a Random Forest model, but leaving a great difference between training and testing accuracy, indicating overfitting. 
-Improved Model:
+
+Improved Model
+
 Improved Model 3: Complex Ensemble Model
 Training Accuracy: 77.784%
 Testing Accuracy: 77.088%
+
 Model 3, the improved version, was fine-tuned and optimized, resulting in substantial improvement in both training and testing accuracy, making it a reliable ensemble model and more capable of generalizing unseen dataset. 
 The improved model shows the potential of ensemble models for solving our task. While there's room for more improvements, it's a significant milestone in our project. 
 The original models had low testing accuracy and struggled with pattern recognition.However, the improved Model 3 greatly improved accuracy and generalization. It highlights the potential of combining different techniques for a better ensemble model.
+
 Key ideas:
 Ensemble Models Improve Accuracy: We believe combining different models (neural networks and Random Forest) led to significant accuracy improvements compared to standalone models.
+
 Model Architecture : Neural network architecture, including activation functions and node counts, played a role in accuracy. Fine-tuning these parameters could further enhance performance.
 Random Forest Baseline: Random Forest performed well and set a strong starting point.
+
 Weighted Ensemble: Using test accuracy to weigh ensemble contributions is a valuable approach, emphasizing the significance of model performance on various classes.
+
 Data Preprocessing Matters: We believe effective data preprocessing is important in contributing to model success.
 
 Area for improvement:
@@ -1892,9 +1900,13 @@ Area for improvement:
 While the models have shown significant improvements compared to the original versions, there might be room  for improvement in the following areas. 
 
 Hyper-parameter Tuning: fine-tuning hyper-parameters like learning rates, batch sizes, and neural network architecture could likely enhance performance further.
+
 Handling Class Imbalance: If the dataset has class imbalance, addressing this issue through techniques like oversampling, under-sampling, or specialized loss functions can lead to more balanced and robust models.
+
 Testing and Validation: Through testing and validation on different datasets and conditions are essential to ensure the models generalize well and remain robust.
+
 Feature Engineering: Enhance input features to better capture patterns and boost model performance.
+
 Advanced Ensemble Methods: Try advanced ensemble techniques like stacking, blending, or boosting to improve model performance through more sophisticated prediction combinations.
 
 ## TODO: Could be good to include Kenny's vision for using the model along with an article scraper for future work.
