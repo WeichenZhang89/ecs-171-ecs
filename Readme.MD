@@ -1878,7 +1878,9 @@ Model 3 improved training accuracy significantly by adding neural networks and a
 Improved Model
 
 Improved Model 3: Complex Ensemble Model
+
 Training Accuracy: 77.784%
+
 Testing Accuracy: 77.088%
 
 Model 3, the improved version, was fine-tuned and optimized, resulting in substantial improvement in both training and testing accuracy, making it a reliable ensemble model and more capable of generalizing unseen dataset. 
