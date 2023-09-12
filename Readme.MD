@@ -1880,7 +1880,7 @@ Improved Model: Complex Ensemble Model
    * Testing Accuracy: 77.088%
 
 The improved version is fine-tuned and optimized, resulting in substantial improvement in both training and testing accuracy, making it a reliable ensemble model and more capable of generalizing unseen dataset. The improved model shows the potential of ensemble models for solving our task. While there's room for more improvements, it's a significant milestone in our project. 
-The original models have low testing accuracy and struggled with pattern recognition. However, the accuracy and generalizationtheof the improved model is greatly improved, which highlights the potential of combining different techniques for a better ensemble model.
+The original models have low testing accuracy and struggle with pattern recognition. However, the accuracy and generalizationtheof the improved model is greatly improved, which highlights the potential of combining different techniques for a better ensemble model.
 
 ### Key ideas:
    * Ensemble Models Improve Accuracy: We believe combining different models (neural networks and Random Forest) led to significant accuracy improvements compared to standalone models.
