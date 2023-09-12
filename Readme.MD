@@ -1820,7 +1820,7 @@ We tested three ensemble models. Ordered in increasing complexity, they were:
 
    * Model 1: Ensemble of 3 linear regression models (With ridge cost function)
    * Model 2: Ensemble of 1 linear regression model + 2 neural network models
-   * model 3: Ensemble of 2 neural network models + 1 Random Forest model
+   * Model 3: Ensemble of 2 neural network models + 1 Random Forest model
 
 The train/test accuracy for our models were as follows:
 
