@@ -1674,12 +1674,6 @@ At Fold = 4, the training accuracy surpasses testing accuracy, but at Fold = 5, 
 
 In summary, the K-fold validation results for the complex ensemble model depict a fairly consistent and well-generalizing model. The slight variations across folds provide insight into how the model interacts with different data subsets and can be further analyzed for deeper insights or potential areas of improvement.
 
-### Improvements could be done
-While the accuracy is above 70%, there's always room for improvement. The following avenues can be explored:
-1. Features Improving: Enhance the current features or introduce new ones.
-2. Hyperparameters Tuning: Adjust model parameters for better performance.
-3. Models Exploration: Maybe another type of model or a different ensemble strategy could boost performance.
-
 
 ### Discussion for Improved MODEL
 
