@@ -1676,9 +1676,9 @@ In summary, the K-fold validation results for the complex ensemble model depict 
 
 ### Improvements could be done
 While the accuracy is above 70%, there's always room for improvement. The following avenues can be explored:
-Features Improving: Enhance the current features or introduce new ones.
-Hyperparameters Tuning: Adjust model parameters for better performance.
-Models Exploration: Maybe another type of model or a different ensemble strategy could boost performance.
+1. Features Improving: Enhance the current features or introduce new ones.
+2. Hyperparameters Tuning: Adjust model parameters for better performance.
+3. Models Exploration: Maybe another type of model or a different ensemble strategy could boost performance.
 
 
 ### Discussion for Improved MODEL
