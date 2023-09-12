@@ -1842,15 +1842,23 @@ Model 3:
    * Training Accuracy: 0.8530
    * Testing Accuracy: 0.4561
 
-While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere inbetween Model 2 and Model 3.
+While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere in between Model 2 and Model 3.
 
 ### Developing our improved model
-TODO: Write the reasoning behind the improved model
+To improve accuracy, we mostly focused on improving model 3:
+
+model 3: Ensemble of 2 neural network models + 1 Random Forest model
+
+Model 3: 
+Training accuracy: 0.77784
+Testing accuracy: 0.77088
+
+The training accuracy slightly decreased in the improved model, which helps prevent overfitting. More importantly, the testing accuracy improved dramatically from 0.4561 to 0.77088. This indicates that the improved model has improved performance in generalizing its predictions to unseen data.
+
 
 ## Conclusion
 TODO: What do we think of our model? What can we do better?
 
-TODO: Could be good to include Kenny's vision for using the model along with an article scraper for future work.
 
 ## Contributions
 <!-- Things need to be added here -->
