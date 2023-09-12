@@ -1435,7 +1435,7 @@ plt.show()
 ```
 
 ### Evaluation Data Obtained by Original MODEL
-#### The Simple Ensemble Model
+#### The Simple Ensemble Model: Preliminary Test
 ##### Classification Reports
 ```
 Train:
@@ -1482,8 +1482,14 @@ Training Accuracy: 0.4399
 Testing Accuracy: 0.4421
 There could be overfitting.
 ```
+##### Evaluation
+Based on the evaluation data provided, it doesn't appear that overfitting is a significant issue here: the training and test accuracies are very close to each other for individual models as well as for the ensemble model.
 
-#### The Medium Ensemble Model
+However, the performance metrics do raise some concerns. The overall accuracy for both training and test sets is around 44%, which may not be sufficient depending on the application. Additionally, the recall and f1-scores for classes 1 and 2 are particularly low, indicating that the model is not doing well in correctly identifying instances of these classes. The precision, recall, and f1-score for class 0 and class 3 are comparatively better, but there is definitely room for improvement across all metrics.
+
+It's also worth noting that this ensemble model did not significantly outperform the individual models since it has a low complexity, which suggests that the ensemble approach may not be effective with these particular datasets or models.
+
+#### The Medium Ensemble Model: Preliminary Test
 ##### Classification Reports
 ```
 Train:
@@ -1530,8 +1536,16 @@ Training Accuracy: 0.4399
 Testing Accuracy: 0.4421
 There could be overfitting.
 ```
+##### Evaluation
+Similarly, there is no strong evidence of overfitting since the training and testing accuracies are quite close across all models, including the ensemble model.
 
-#### The Complex Ensemble Model
+However, the confusion metrics across both training and testing datasets do indicate areas for improvement. The overall accuracy is not particularly high, around 44%, which may be insufficient depending on the specific application or context for which these models are intended.
+
+It's noteworthy that precision, recall, and f1-scores are especially low for classes 1 and 2. This suggests that the models struggle to correctly identify instances of these classes. For class 0 and class 3, while the metrics are better, there's still room for improvement.
+
+Additionally, the ensemble model didn't show a significant improvement in performance compared to the individual models. This could mean that the ensemble strategy isn't adding much value in this case, and other techniques might be more effective.
+
+#### The Complex Ensemble Model: Preliminary Test
 ##### Classification Reports
 ```
 Train:
@@ -1578,6 +1592,15 @@ Training Accuracy: 0.8530
 Testing Accuracy: 0.4561
 There should be no overfitting.
 ```
+##### Evaluation
+Contrary to the statement "There should be no overfitting", the results indicate clear overfitting, especially in the Random Forest model since the huge disparity between training(85.3%) and testing(45.6%) accuracies is a sign of potential overfitting. The model is performing exceptionally well on the training data (to the point of perfection for the Random Forest) but struggles to generalize to unseen data in the test set, which should be a problem arising from the Random Forest classifier.
+
+Both neural networks exhibit relatively balanced performance between training and testing phases, suggesting that they've generalized well to the test set. They don't show the drastic drop in accuracy that we observed with the Random Forest. Their training and testing accuracies are closer in range, indicating a more consistent behavior. While they might still have room for improvement in terms of absolute accuracy, their tendency to overfit is significantly less compared to the Random Forest.
+
+While the overall accuracy might suggest decent performance on the training set, the more granular F1-scores tell a deeper story: for classes 1 and 2 on the test set, the F1-scores are quite low at 0.22 and 0.08 respectively, highlighting a challenge with achieving a balance between precision and recall for these classes.
+
+Additionally, for the training data, precision and recall are generally higher, especially for class 2 where precision is at 100%. This indicates the model is very confident when it predicts class 2, and it's always right in the training data. On the test set, however, the performance drops across the board. For example, class 1's recall drops from 70% on the training set to just 14% on the test set, indicating that the model is missing a lot of actual class 1 instances in the test data.
+
 
 #### The Simple Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1587,6 +1610,7 @@ Training Accuracy: 0.4503
 Testing Accuracy: 0.4427
 ```
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/SP3.png)
+##### Evaluation
 
 
 #### The Medium Ensemble Model with Stratified KFold
@@ -1607,6 +1631,7 @@ Testing Accuracy: 0.4641
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD3.png)
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD4.png)
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/MD5.png)
+##### Evaluation
 
 #### The Complex Ensemble Model with Stratified KFold
 ##### Accuracies
@@ -1616,7 +1641,7 @@ Training Accuracy: 0.7028
 Testing Accuracy: 0.7010
 ```
 ![Image text](https://github.com/WeichenZhang89/ecs-171-ecs/blob/3fc9844c3064fe894f9d3f0ed153fcb83e633dff/original_model_images/CP3.png)
-
+##### Evaluation
 
 ### Discussion for Improved MODEL
 
