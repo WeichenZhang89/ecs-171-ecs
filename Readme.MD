@@ -2182,3 +2182,6 @@ Weichen Zhang: Modified to visualize graphs in the Data Exploration. Added featu
 
 Jiazhi(Kenny) Sun:
 scatter plot, # of data missing, columns descriptions in data exploration. Isolation forest, data classifier, one ensemble model in Data preprocessing and ML model. Everything in improved ML model
+
+Szu Jay Ma:
+Coded data description & data distribution in milestone 1. Coded stratified kfold for training individual models and subsequent evaluations of ensemble models in milestone 2. Wrote Methods (Data exploration) + Discussion (Data exploration) in milestone 3.
