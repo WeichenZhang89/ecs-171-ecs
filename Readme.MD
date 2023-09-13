@@ -1126,9 +1126,13 @@ plt.show()
 ```
 
 ## Results
+
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
+
 ### Dataframe after preprocessing
+
 After preprocessing the dataframe according to the methods section, our features look like the following:
+
 ```
        n_tokens_title  n_tokens_content  n_unique_tokens  n_non_stop_words  \
 0                12.0             219.0         0.663594               1.0   
@@ -1161,6 +1165,7 @@ After preprocessing the dataframe according to the methods section, our features
 ```
 
 And since we one-hot encoded our y vector, y is an array of arrays where values are 0 or 1.
+
 ```
 [[1. 0. 0. 0.]
  [1. 0. 0. 0.]
