@@ -2182,3 +2182,5 @@ While the models have shown significant improvements compared to the original ve
 Jun Min Kim:
 Writer of Introduction, Methods (preprocessing), Discussion(preprocessing), developed part of the original model.
 
+Pinhao(Lucian) Hong:
+Participated in the construction (Non-Kfold), evaluation, and data visualization parts of the original model; Collected the resulting data and graphs for the original model in Results; Provided an explanation of the effects and purposes of the codes in the original model, and analyzed & interpreted the obtained data for evaluating the original model in Discussion.
