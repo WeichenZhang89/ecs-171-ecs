@@ -1136,6 +1136,107 @@ Note: Just reporting the results will be good enough. I think the analysis is su
 
 
 ## Discussion
+
+### Data Exploration
+#### Descriptive Statistics
+- The descriptive statistics provided a summary of the central tendency, dispersion, and shape of the distribution of the dataset. It's a very useful method for a quick statistical summary, however it doesn't provide a full picture of data distribution. For a more comprehensive understanding, please refer to the histograms below.
+
+<details>
+  <summary>Click to expand the `.describe()` table</summary>
+
+|       |   timedelta |   n_tokens_title |   n_tokens_content |   n_unique_tokens |   n_non_stop_words |   n_non_stop_unique_tokens |   num_hrefs |   num_self_hrefs |    num_imgs |   num_videos |   average_token_length |   num_keywords |   data_channel_is_lifestyle |   data_channel_is_entertainment |   data_channel_is_bus |   data_channel_is_socmed |   data_channel_is_tech |   data_channel_is_world |   kw_min_min |   kw_max_min |   kw_avg_min |   kw_min_max |   kw_max_max |   kw_avg_max |   kw_min_avg |   kw_max_avg |   kw_avg_avg |   self_reference_min_shares |   self_reference_max_shares |   self_reference_avg_sharess |   weekday_is_monday |   weekday_is_tuesday |   weekday_is_wednesday |   weekday_is_thursday |   weekday_is_friday |   weekday_is_saturday |   weekday_is_sunday |   is_weekend |        LDA_00 |        LDA_01 |        LDA_02 |        LDA_03 |        LDA_04 |   global_subjectivity |   global_sentiment_polarity |   global_rate_positive_words |   global_rate_negative_words |   rate_positive_words |   rate_negative_words |   avg_positive_polarity |   min_positive_polarity |   max_positive_polarity |   avg_negative_polarity |   min_negative_polarity |   max_negative_polarity |   title_subjectivity |   title_sentiment_polarity |   abs_title_subjectivity |   abs_title_sentiment_polarity |    shares |
+|:------|------------:|-----------------:|-------------------:|------------------:|-------------------:|---------------------------:|------------:|-----------------:|------------:|-------------:|-----------------------:|---------------:|----------------------------:|--------------------------------:|----------------------:|-------------------------:|-----------------------:|------------------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|----------------------------:|----------------------------:|-----------------------------:|--------------------:|---------------------:|-----------------------:|----------------------:|--------------------:|----------------------:|--------------------:|-------------:|--------------:|--------------:|--------------:|--------------:|--------------:|----------------------:|----------------------------:|-----------------------------:|-----------------------------:|----------------------:|----------------------:|------------------------:|------------------------:|------------------------:|------------------------:|------------------------:|------------------------:|---------------------:|---------------------------:|-------------------------:|-------------------------------:|----------:|
+| count |   39644     |      39644       |          39644     |      39644        |       39644        |               39644        |  39644      |      39644       | 39644       |  39644       |           39644        |    39644       |               39644         |                    39644        |          39644        |            39644         |           39644        |            39644        |   39644      |     39644    |    39644     |      39644   |        39644 |        39644 |     39644    |     39644    |     39644    |                    39644    |                     39644   |                    39644     |        39644        |         39644        |           39644        |          39644        |        39644        |         39644         |       39644         | 39644        | 39644         | 39644         | 39644         | 39644         | 39644         |          39644        |               39644         |                39644         |               39644          |          39644        |          39644        |            39644        |           39644         |            39644        |            39644        |            39644        |            39644        |         39644        |              39644         |             39644        |                   39644        |  39644    |
+| mean  |     354.53  |         10.3987  |            546.515 |          0.548216 |           0.996469 |                   0.689175 |     10.8837 |          3.29364 |     4.54414 |      1.24987 |               4.54824  |        7.22377 |                   0.0529462 |                        0.178009 |              0.157855 |                0.0585965 |               0.185299 |                0.212567 |      26.1068 |      1153.95 |      312.367 |      13612.4 |       752324 |       259282 |      1117.15 |      5657.21 |      3135.86 |                     3998.76 |                     10329.2 |                     6401.7   |            0.16802  |             0.186409 |               0.187544 |              0.183306 |            0.143805 |             0.0618757 |           0.0690395 |     0.130915 |     0.184599  |     0.141256  |     0.216321  |     0.22377   |     0.234029  |              0.44337  |                   0.119309  |                    0.0396248 |                   0.0166121  |              0.68215  |              0.287934 |                0.353825 |               0.0954455 |                0.756728 |               -0.259524 |               -0.521944 |               -0.1075   |             0.282353 |                  0.0714254 |                 0.341843 |                       0.156064 |   3395.38 |
+| std   |     214.164 |          2.11404 |            471.108 |          3.52071  |           5.23123  |                   3.26482  |     11.332  |          3.85514 |     8.30943 |      4.10786 |               0.844406 |        1.90913 |                   0.223929  |                        0.382525 |              0.36461  |                0.234871  |               0.388545 |                0.409129 |      69.6332 |      3857.99 |      620.784 |      57986   |       214502 |       135102 |      1137.46 |      6098.87 |      1318.15 |                    19738.7  |                     41027.6 |                    24211.3   |            0.373889 |             0.389441 |               0.390353 |              0.386922 |            0.350896 |             0.240933  |           0.253524  |     0.337312 |     0.262975  |     0.219707  |     0.282145  |     0.295191  |     0.289183  |              0.116685 |                   0.0969307 |                    0.0174287 |                   0.0108278  |              0.190206 |              0.156156 |                0.104542 |               0.0713149 |                0.247786 |                0.127726 |                0.29029  |                0.095373 |             0.324247 |                  0.26545   |                 0.188791 |                       0.226294 |  11627    |
+| min   |       8     |          2       |              0     |          0        |           0        |                   0        |      0      |          0       |     0       |      0       |               0        |        1       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |         0    |       -1     |          0   |            0 |            0 |        -1    |         0    |         0    |                        0    |                         0   |                        0     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0         |     0         |     0         |     0         |     0         |              0        |                  -0.39375   |                    0         |                   0          |              0        |              0        |                0        |               0         |                0        |               -1        |               -1        |               -1        |             0        |                 -1         |                 0        |                       0        |      1    |
+| 25%   |     164     |          9       |            246     |          0.47087  |           1        |                   0.625739 |      4      |          1       |     1       |      0       |               4.4784   |        6       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |       445    |      141.75  |          0   |       843300 |       172847 |         0    |      3562.1  |      2382.45 |                      639    |                      1100   |                      981.188 |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.0250506 |     0.0250125 |     0.0285715 |     0.0285715 |     0.0285737 |              0.396167 |                   0.0577574 |                    0.0283843 |                   0.00961538 |              0.6      |              0.185185 |                0.306244 |               0.05      |                0.6      |               -0.328383 |               -0.7      |               -0.125    |             0        |                  0         |                 0.166667 |                       0        |    946    |
+| 50%   |     339     |         10       |            409     |          0.539226 |           1        |                   0.690476 |      8      |          3       |     1       |      0       |               4.66408  |        7       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |       660    |      235.5   |       1400   |       843300 |       244572 |      1023.64 |      4355.69 |      2870.07 |                     1200    |                      2800   |                     2200     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.0333874 |     0.033345  |     0.0400039 |     0.0400007 |     0.0407274 |              0.453457 |                   0.119117  |                    0.0390228 |                   0.0153374  |              0.710526 |              0.28     |                0.358755 |               0.1       |                0.8      |               -0.253333 |               -0.5      |               -0.1      |             0.15     |                  0         |                 0.5      |                       0        |   1400    |
+| 75%   |     542     |         12       |            716     |          0.608696 |           1        |                   0.75463  |     14      |          4       |     4       |      1       |               4.85484  |        9       |                   0         |                        0        |              0        |                0         |               0        |                0        |       4      |      1000    |      357     |       7900   |       843300 |       330980 |      2056.78 |      6019.95 |      3600.23 |                     2600    |                      8000   |                     5200     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.240958  |     0.150831  |     0.334218  |     0.375763  |     0.399986  |              0.508333 |                   0.177832  |                    0.0502793 |                   0.0217391  |              0.8      |              0.384615 |                0.411428 |               0.1       |                1        |               -0.186905 |               -0.3      |               -0.05     |             0.5      |                  0.15      |                 0.5      |                       0.25     |   2800    |
+| max   |     731     |         23       |           8474     |        701        |        1042        |                 650        |    304      |        116       |   128       |     91       |               8.04153  |       10       |                   1         |                        1        |              1        |                1         |               1        |                1        |     377      |    298400    |    42827.9   |     843300   |       843300 |       843300 |      3613.04 |    298400    |     43567.7  |                   843300    |                    843300   |                   843300     |            1        |             1        |               1        |              1        |            1        |             1         |           1         |     1        |     0.926994  |     0.925947  |     0.919999  |     0.926534  |     0.927191  |              1        |                   0.727841  |                    0.155488  |                   0.184932   |              1        |              1        |                1        |               1         |                1        |                0        |                0        |                0        |             1        |                  1         |                 0.5      |                       1        | 843300    |
+
+</details>
+
+#### Scatter Plots for Features vs. Shares
+- Scatter plots provide visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
+
+<details>
+  <summary>Click to view the Scatter Plots</summary>
+
+![Scatter plots](Scatter_Plot.png)
+
+</details>
+
+#### Distribution of Continuous Features
+- Histograms offer a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
+
+<details>
+  <summary>Click to view the Histogram Plots</summary>
+
+![Histogram plots](Histograms.png)
+
+</details>
+
+#### Distribution of One-Hot Encoded Categorical Features
+- The histograms for one-hot encoded categorical features provide insights into the distribution across different categories, like which data channel or which day of the week has more articles.
+- We separated the visualizations for continous and categorical features for three reasons:
+   - For continuous features, histograms reflect the distribution, central tendency, and spread of the data.
+   - For one-hot encoded categorical features, histograms display the count or frequency of observations in each distinct category, indicating the prevalence of each category in the dataset.
+   - Preprocessing techniques vary based on feature type (continuous vs categorical), affecting model performance, data integrity, and interpretability.
+
+<details>
+  <summary>Click to view the Histograms (categorical columns)</summary>
+
+![Histogram categorical](histogram_plot.png)
+
+</details>
+
+### Data Preprocessing
+#### Data Imputation
+From the result of 
+
+```
+null_data_count = data.isnull().sum().sum()
+print (f"There are total of {null_data_count} missing data")
+```
+
+We found that our data did not have any null values. Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. To address these outliers, we used an isolation forest model to remove the outliers. More information on the isolation forest model can be found [here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest).
+
+#### Dropping features
+The ‘url’ column contains the url for each article in our observations. The ‘timedelta’ column indicates days between the article publication and the dataset acquisition. Since these two features will have no effect on how many shares an article will get, we excluded these variables when training our model.
+
+#### Data normalization
+During the data exploration phase, we saw from our scatterplots that only a few of our features (global_subjectivity and avg_positive_polarity) for example, seemed to be normally distributed. Since only a few of our features were normally distributed, we rescaled our data using MinMaxScaler() so that our feature values were between 0 and 1.
+
+#### Data encoding
+Rather than having our model be a regression model that predicts a continuous value, we decided to make it a classifier instead. This made more sense to us because predicting the exact number of shares an article will get is not as important or as useful as knowing how “interesting” an article would be. For instance, it is not important that an article will be predicted to get exactly 200 shares but rather that it would belong to a class of being an interesting article. 
+
+In order to accomplish this, we split the number of shares (a continuous value) into different classes as such:
+
+* Great Article: Shares >= 90%
+* Good Article: 70% <= Shares < 90%
+* Normal Article: 30% <= Shares < 70%
+* Bad article: Shares < 30%
+
+Where positive words such as “Great” and “Good” denote that it will get many shares and negative words denote that it will get few. For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article". We used one-hot encoding mentioned in the methods sections to encode the continuous values into binary values.
+
+### Developing our original model
+Since simple regression models have already been done by other people on this data set, we set out to develop an ensemble model that takes different predictions from multiple machine learning models before making its decision. 
+
+The models we used for building the ensemble model were:
+
+* A simple linear regression model
+* A neural network model
+* A model utilizing Random Forest
+* A SVM model
+
+Our model then takes account of the predictions made by different models, and takes the mode (or mean) as the prediction value.
+
+The model complexity of our ensemble model can be defined by the complexity of the models the ensemble is made of. For instance, an ensemble model that considers predictions from only linear regression models would be considered simple, while an ensemble consisting of neural network models and a random forest model more complex.
+
+Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
+
+
 ### Discussion for Original MODEL
 #### Preprocessing and Visualizing the Input Data
 We use the 'MinMaxScaler' to normalize our dataset, ensuring that all features have the same scale. After scaling, we split our data into training and testing sets, retaining 20% for testing. We then check the range of our scaled training data to ensure consistency. Finally, we visualize the distribution of our scaled training data using histograms for each column to gain insights into its distribution:
@@ -1718,149 +1819,6 @@ In summary, the K-fold validation results for the complex ensemble model depict 
 - Finally, we ensemble three components of the improved model, so we could make the model more accurate for each class. 
 
 <img src = "improve_model_images/nn3_confusion_matrix.png">
-
-
-
-
-Note: The following was preserved from our original milestone submissions. I think we only have to tweak & add on what we have for the discussion section.
-
-### Data Exploration
-#### Descriptive Statistics
-- The descriptive statistics provided a summary of the central tendency, dispersion, and shape of the distribution of the dataset. It's a very useful method for a quick statistical summary, however it doesn't provide a full picture of data distribution. For a more comprehensive understanding, please refer to the histograms below.
-
-<details>
-  <summary>Click to expand the `.describe()` table</summary>
-
-|       |   timedelta |   n_tokens_title |   n_tokens_content |   n_unique_tokens |   n_non_stop_words |   n_non_stop_unique_tokens |   num_hrefs |   num_self_hrefs |    num_imgs |   num_videos |   average_token_length |   num_keywords |   data_channel_is_lifestyle |   data_channel_is_entertainment |   data_channel_is_bus |   data_channel_is_socmed |   data_channel_is_tech |   data_channel_is_world |   kw_min_min |   kw_max_min |   kw_avg_min |   kw_min_max |   kw_max_max |   kw_avg_max |   kw_min_avg |   kw_max_avg |   kw_avg_avg |   self_reference_min_shares |   self_reference_max_shares |   self_reference_avg_sharess |   weekday_is_monday |   weekday_is_tuesday |   weekday_is_wednesday |   weekday_is_thursday |   weekday_is_friday |   weekday_is_saturday |   weekday_is_sunday |   is_weekend |        LDA_00 |        LDA_01 |        LDA_02 |        LDA_03 |        LDA_04 |   global_subjectivity |   global_sentiment_polarity |   global_rate_positive_words |   global_rate_negative_words |   rate_positive_words |   rate_negative_words |   avg_positive_polarity |   min_positive_polarity |   max_positive_polarity |   avg_negative_polarity |   min_negative_polarity |   max_negative_polarity |   title_subjectivity |   title_sentiment_polarity |   abs_title_subjectivity |   abs_title_sentiment_polarity |    shares |
-|:------|------------:|-----------------:|-------------------:|------------------:|-------------------:|---------------------------:|------------:|-----------------:|------------:|-------------:|-----------------------:|---------------:|----------------------------:|--------------------------------:|----------------------:|-------------------------:|-----------------------:|------------------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|-------------:|----------------------------:|----------------------------:|-----------------------------:|--------------------:|---------------------:|-----------------------:|----------------------:|--------------------:|----------------------:|--------------------:|-------------:|--------------:|--------------:|--------------:|--------------:|--------------:|----------------------:|----------------------------:|-----------------------------:|-----------------------------:|----------------------:|----------------------:|------------------------:|------------------------:|------------------------:|------------------------:|------------------------:|------------------------:|---------------------:|---------------------------:|-------------------------:|-------------------------------:|----------:|
-| count |   39644     |      39644       |          39644     |      39644        |       39644        |               39644        |  39644      |      39644       | 39644       |  39644       |           39644        |    39644       |               39644         |                    39644        |          39644        |            39644         |           39644        |            39644        |   39644      |     39644    |    39644     |      39644   |        39644 |        39644 |     39644    |     39644    |     39644    |                    39644    |                     39644   |                    39644     |        39644        |         39644        |           39644        |          39644        |        39644        |         39644         |       39644         | 39644        | 39644         | 39644         | 39644         | 39644         | 39644         |          39644        |               39644         |                39644         |               39644          |          39644        |          39644        |            39644        |           39644         |            39644        |            39644        |            39644        |            39644        |         39644        |              39644         |             39644        |                   39644        |  39644    |
-| mean  |     354.53  |         10.3987  |            546.515 |          0.548216 |           0.996469 |                   0.689175 |     10.8837 |          3.29364 |     4.54414 |      1.24987 |               4.54824  |        7.22377 |                   0.0529462 |                        0.178009 |              0.157855 |                0.0585965 |               0.185299 |                0.212567 |      26.1068 |      1153.95 |      312.367 |      13612.4 |       752324 |       259282 |      1117.15 |      5657.21 |      3135.86 |                     3998.76 |                     10329.2 |                     6401.7   |            0.16802  |             0.186409 |               0.187544 |              0.183306 |            0.143805 |             0.0618757 |           0.0690395 |     0.130915 |     0.184599  |     0.141256  |     0.216321  |     0.22377   |     0.234029  |              0.44337  |                   0.119309  |                    0.0396248 |                   0.0166121  |              0.68215  |              0.287934 |                0.353825 |               0.0954455 |                0.756728 |               -0.259524 |               -0.521944 |               -0.1075   |             0.282353 |                  0.0714254 |                 0.341843 |                       0.156064 |   3395.38 |
-| std   |     214.164 |          2.11404 |            471.108 |          3.52071  |           5.23123  |                   3.26482  |     11.332  |          3.85514 |     8.30943 |      4.10786 |               0.844406 |        1.90913 |                   0.223929  |                        0.382525 |              0.36461  |                0.234871  |               0.388545 |                0.409129 |      69.6332 |      3857.99 |      620.784 |      57986   |       214502 |       135102 |      1137.46 |      6098.87 |      1318.15 |                    19738.7  |                     41027.6 |                    24211.3   |            0.373889 |             0.389441 |               0.390353 |              0.386922 |            0.350896 |             0.240933  |           0.253524  |     0.337312 |     0.262975  |     0.219707  |     0.282145  |     0.295191  |     0.289183  |              0.116685 |                   0.0969307 |                    0.0174287 |                   0.0108278  |              0.190206 |              0.156156 |                0.104542 |               0.0713149 |                0.247786 |                0.127726 |                0.29029  |                0.095373 |             0.324247 |                  0.26545   |                 0.188791 |                       0.226294 |  11627    |
-| min   |       8     |          2       |              0     |          0        |           0        |                   0        |      0      |          0       |     0       |      0       |               0        |        1       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |         0    |       -1     |          0   |            0 |            0 |        -1    |         0    |         0    |                        0    |                         0   |                        0     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0         |     0         |     0         |     0         |     0         |              0        |                  -0.39375   |                    0         |                   0          |              0        |              0        |                0        |               0         |                0        |               -1        |               -1        |               -1        |             0        |                 -1         |                 0        |                       0        |      1    |
-| 25%   |     164     |          9       |            246     |          0.47087  |           1        |                   0.625739 |      4      |          1       |     1       |      0       |               4.4784   |        6       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |       445    |      141.75  |          0   |       843300 |       172847 |         0    |      3562.1  |      2382.45 |                      639    |                      1100   |                      981.188 |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.0250506 |     0.0250125 |     0.0285715 |     0.0285715 |     0.0285737 |              0.396167 |                   0.0577574 |                    0.0283843 |                   0.00961538 |              0.6      |              0.185185 |                0.306244 |               0.05      |                0.6      |               -0.328383 |               -0.7      |               -0.125    |             0        |                  0         |                 0.166667 |                       0        |    946    |
-| 50%   |     339     |         10       |            409     |          0.539226 |           1        |                   0.690476 |      8      |          3       |     1       |      0       |               4.66408  |        7       |                   0         |                        0        |              0        |                0         |               0        |                0        |      -1      |       660    |      235.5   |       1400   |       843300 |       244572 |      1023.64 |      4355.69 |      2870.07 |                     1200    |                      2800   |                     2200     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.0333874 |     0.033345  |     0.0400039 |     0.0400007 |     0.0407274 |              0.453457 |                   0.119117  |                    0.0390228 |                   0.0153374  |              0.710526 |              0.28     |                0.358755 |               0.1       |                0.8      |               -0.253333 |               -0.5      |               -0.1      |             0.15     |                  0         |                 0.5      |                       0        |   1400    |
-| 75%   |     542     |         12       |            716     |          0.608696 |           1        |                   0.75463  |     14      |          4       |     4       |      1       |               4.85484  |        9       |                   0         |                        0        |              0        |                0         |               0        |                0        |       4      |      1000    |      357     |       7900   |       843300 |       330980 |      2056.78 |      6019.95 |      3600.23 |                     2600    |                      8000   |                     5200     |            0        |             0        |               0        |              0        |            0        |             0         |           0         |     0        |     0.240958  |     0.150831  |     0.334218  |     0.375763  |     0.399986  |              0.508333 |                   0.177832  |                    0.0502793 |                   0.0217391  |              0.8      |              0.384615 |                0.411428 |               0.1       |                1        |               -0.186905 |               -0.3      |               -0.05     |             0.5      |                  0.15      |                 0.5      |                       0.25     |   2800    |
-| max   |     731     |         23       |           8474     |        701        |        1042        |                 650        |    304      |        116       |   128       |     91       |               8.04153  |       10       |                   1         |                        1        |              1        |                1         |               1        |                1        |     377      |    298400    |    42827.9   |     843300   |       843300 |       843300 |      3613.04 |    298400    |     43567.7  |                   843300    |                    843300   |                   843300     |            1        |             1        |               1        |              1        |            1        |             1         |           1         |     1        |     0.926994  |     0.925947  |     0.919999  |     0.926534  |     0.927191  |              1        |                   0.727841  |                    0.155488  |                   0.184932   |              1        |              1        |                1        |               1         |                1        |                0        |                0        |                0        |             1        |                  1         |                 0.5      |                       1        | 843300    |
-
-</details>
-
-#### Scatter Plots for Features vs. Shares
-- Scatter plots provide visual representation of the relationship between each feature and the target variable ('shares'). This helped in identifying patterns, outliers, or any potential relationships between the variables.
-
-<details>
-  <summary>Click to view the Scatter Plots</summary>
-
-![Scatter plots](Scatter_Plot.png)
-
-</details>
-
-#### Distribution of Continuous Features
-- Histograms offer a visual representation of data distribution across different continuous features. Using a logarithmic scale on the y-axis helped in visualizing features with wide-ranging frequencies.
-
-<details>
-  <summary>Click to view the Histogram Plots</summary>
-
-![Histogram plots](Histograms.png)
-
-</details>
-
-#### Distribution of One-Hot Encoded Categorical Features
-- The histograms for one-hot encoded categorical features provide insights into the distribution across different categories, like which data channel or which day of the week has more articles.
-- We separated the visualizations for continous and categorical features for three reasons:
-   - For continuous features, histograms reflect the distribution, central tendency, and spread of the data.
-   - For one-hot encoded categorical features, histograms display the count or frequency of observations in each distinct category, indicating the prevalence of each category in the dataset.
-   - Preprocessing techniques vary based on feature type (continuous vs categorical), affecting model performance, data integrity, and interpretability.
-
-<details>
-  <summary>Click to view the Histograms (categorical columns)</summary>
-
-![Histogram categorical](histogram_plot.png)
-
-</details>
-
-
-
-### Data Preprocessing
-#### Data Imputation
-From the result of 
-
-```
-null_data_count = data.isnull().sum().sum()
-print (f"There are total of {null_data_count} missing data")
-```
-
-We found that our data did not have any null values. Although we did not have any null values, we saw from our scatterplots that many features had outliers that could be problematic. To address these outliers, we used an isolation forest model to remove the outliers. More information on the isolation forest model can be found [here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest).
-
-#### Dropping features
-The ‘url’ column contains the url for each article in our observations. The ‘timedelta’ column indicates days between the article publication and the dataset acquisition. Since these two features will have no effect on how many shares an article will get, we excluded these variables when training our model.
-
-#### Data normalization
-During the data exploration phase, we saw from our scatterplots that only a few of our features (global_subjectivity and avg_positive_polarity) for example, seemed to be normally distributed. Since only a few of our features were normally distributed, we rescaled our data using MinMaxScaler() so that our feature values were between 0 and 1.
-
-#### Data encoding
-Rather than having our model be a regression model that predicts a continuous value, we decided to make it a classifier instead. This made more sense to us because predicting the exact number of shares an article will get is not as important or as useful as knowing how “interesting” an article would be. For instance, it is not important that an article will be predicted to get exactly 200 shares but rather that it would belong to a class of being an interesting article. 
-
-In order to accomplish this, we split the number of shares (a continuous value) into different classes as such:
-
-* Great Article: Shares >= 90%
-* Good Article: 70% <= Shares < 90%
-* Normal Article: 30% <= Shares < 70%
-* Bad article: Shares < 30%
-
-Where positive words such as “Great” and “Good” denote that it will get many shares and negative words denote that it will get few. For example, a share number that is above the 90th percentile out of our data would be classified as a "Great Article". We used one-hot encoding mentioned in the methods sections to encode the continuous values into binary values.
-
-### Developing our original model
-Since simple regression models have already been done by other people on this data set, we set out to develop an ensemble model that takes different predictions from multiple machine learning models before making its decision. 
-
-The models we used for building the ensemble model were:
-
-* A simple linear regression model
-* A neural network model
-* A model utilizing Random Forest
-* A SVM model
-
-Our model then takes account of the predictions made by different models, and takes the mode (or mean) as the prediction value.
-
-The model complexity of our ensemble model can be defined by the complexity of the models the ensemble is made of. For instance, an ensemble model that considers predictions from only linear regression models would be considered simple, while an ensemble consisting of neural network models and a random forest model more complex.
-
-Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
-
-#### Test for overfitting (original model)
-We tested three ensemble models. Ordered in increasing complexity, they were:
-
-   * Model 1: Ensemble of 3 linear regression models (With ridge cost function)
-   * Model 2: Ensemble of 1 linear regression model + 2 neural network models
-   * Model 3: Ensemble of 2 neural network models + 1 Random Forest model
-
-The train/test accuracy for our models were as follows:
-
-Model 1:
-   * Training Accuracy: 0.4529
-   * Testing Accuracy: 0.4414
-
-Model 2:
-   * Training Accuracy: 0.4740
-   * Testing Accuracy: 0.4505
-
-Model 3:
-   * Training Accuracy: 0.8530
-   * Testing Accuracy: 0.4561
-
-While accuracy improves slightly as model complexity increases, we see that the difference between train/test accuracy increases greatly when going from Model 2 to Model 3. Based on these observations, we can conclude that Model 3 is overfitting and that the ideal complexity for our model would be somewhere in between Model 2 and Model 3.
-
-### Developing our improved model
-To improve accuracy, we mostly focused on improving model 3:
-
- * Model 3: Ensemble of 2 neural network models + 1 Random Forest model
-
-The train/test accuracy for our models were as follows:
-
-Model 3: 
-   * Training accuracy: 0.77784
-   * Testing accuracy: 0.77088
-
-The training accuracy slightly decreased in the improved model, which helps prevent overfitting. More importantly, the testing accuracy improved dramatically from 0.4561 to 0.77088. This indicates that the improved model has improved performance in generalizing its predictions to unseen data.
-
 
 ## Conclusion
 ### Summary of Models
