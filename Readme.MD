@@ -1918,5 +1918,6 @@ While the models have shown significant improvements compared to the original ve
 
 
 ## Contributions
-<!-- Things need to be added here -->
+Jun Min Kim:
+Writer of Introduction, Methods (preprocessing), Discussion(preprocessing), developed part of the original model.
 
