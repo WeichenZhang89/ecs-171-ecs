@@ -1127,7 +1127,8 @@ plt.show()
 
 ## Results
 
-TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
+Here's the table of our data after we normalized them with MinMaxScaler.
+[Normalized Described Data Table](./normalized_described_data.csv)
 
 ### Dataframe after preprocessing
 
