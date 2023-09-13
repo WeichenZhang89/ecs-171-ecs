@@ -1127,6 +1127,49 @@ plt.show()
 
 ## Results
 TODO: Summarize what happened to our data after we normalized it (put the result of .describe() here).
+### Dataframe after preprocessing
+After preprocessing the dataframe according to the methods section, our features look like the following:
+```
+       n_tokens_title  n_tokens_content  n_unique_tokens  n_non_stop_words  \
+0                12.0             219.0         0.663594               1.0   
+1                 9.0             255.0         0.604743               1.0   
+2                 9.0             211.0         0.575130               1.0   
+3                 9.0             531.0         0.503788               1.0   
+5                10.0             370.0         0.559889               1.0   
+...               ...               ...              ...               ...   
+39638            11.0             223.0         0.653153               1.0   
+39639            11.0             346.0         0.529052               1.0   
+39641            10.0             442.0         0.516355               1.0   
+39642             6.0             682.0         0.539493               1.0   
+39643            10.0             157.0         0.701987               1.0   
+
+       n_non_stop_unique_tokens  num_hrefs  num_self_hrefs  num_imgs  \
+0                      0.815385        4.0             2.0       1.0   
+1                      0.791946        3.0             1.0       1.0   
+2                      0.663866        3.0             1.0       1.0   
+3                      0.665635        9.0             0.0       1.0   
+5                      0.698198        2.0             2.0       0.0   
+...                         ...        ...             ...       ...   
+39638                  0.825758        5.0             3.0       1.0   
+39639                  0.684783        9.0             7.0       1.0   
+39641                  0.644128       24.0             1.0      12.0   
+39642                  0.692661       10.0             1.0       1.0   
+39643                  0.846154        1.0             1.0       0.0   
+...
+39642                      0.000000  
+39643                      0.250000  
+```
+
+And since we one-hot encoded our y vector, y is an array of arrays where values are 0 or 1.
+```
+[[1. 0. 0. 0.]
+ [1. 0. 0. 0.]
+ [0. 0. 0. 1.]
+ ...
+ [0. 0. 0. 1.]
+ [0. 0. 0. 1.]
+ [0. 0. 0. 1.]]
+```
 
 TODO: Accuracy & Overfitting graph for model 1.
 
