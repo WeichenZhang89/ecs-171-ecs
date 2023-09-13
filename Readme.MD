@@ -1179,7 +1179,7 @@ And since we one-hot encoded our y vector, y is an array of arrays where values 
 TODO: Accuracy & Overfitting graph for model 1.
 
 ### Improved Model
-#### NN1 (Neural Network Model 1)Analysis
+#### NN1 (Neural Network Model 1) Analysis
 Below is the classfication report and heatmap:
 <img src = "improve_model_images/nn1_classification_report.png">
 <img src = "improve_model_images/nn1_confusion_matrix.png">
@@ -1190,7 +1190,7 @@ Test Accuracy: 68.73599%
 Train Accuracy: 68.73599%
 ```
 
-#### NN2 (Neural Network Model 2)Analysis
+#### NN2 (Neural Network Model 2) Analysis
 Below is the classfication report and heatmap:
 <img src = "improve_model_images/nn2_classification_report.png">
 <img src = "improve_model_images/nn2_confusion_matrix.png">
