@@ -2179,3 +2179,6 @@ Pinhao(Lucian) Hong:
 Participated in the construction (Non-Kfold), evaluation, modification, and data visualization parts of the original model; Collected the resulting data and graphs for the original model in Results; Provided an explanation of the effects and purposes of the codes in the original model, and analyzed & interpreted the obtained data for evaluating the original model in Discussion.
 
 Weichen Zhang: Modified to visualize graphs in the Data Exploration. Added features to speed up the training process and validate the usage of the scaling strategy of Original Models. Discussed strategies to improve the accuracy of the best-performing ensemble model (2NN+1RF) with Kenny Sun. Wrote Discussion, Methods, and Result Section for the Improved Model. 
+
+Jiazhi(Kenny) Sun:
+scatter plot, # of data missing, columns descriptions in data exploration. Isolation forest, data classifier, one ensemble model in Data preprocessing and ML model. Everything in improved ML model
