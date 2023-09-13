@@ -1178,7 +1178,49 @@ And since we one-hot encoded our y vector, y is an array of arrays where values 
 
 TODO: Accuracy & Overfitting graph for model 1.
 
-TODO: Accuracy & Overfitting graph for model 2.
+### Improved Model
+#### NN1 (Neural Network Model 1)Analysis
+Below is the classfication report and heatmap:
+<img src = "improve_model_images/nn1_classification_report.png">
+<img src = "improve_model_images/nn1_confusion_matrix.png">
+
+Below is the test and train accuracy:
+```
+Test Accuracy: 68.73599%
+Train Accuracy: 68.73599%
+```
+
+#### NN2 (Neural Network Model 2)Analysis
+Below is the classfication report and heatmap:
+<img src = "improve_model_images/nn2_classification_report.png">
+<img src = "improve_model_images/nn2_confusion_matrix.png">
+
+Below is the test and train accuracy:
+```
+Test Accuracy: 64.32175%
+Train Accuracy: 65.26994%
+```
+
+#### RF (Random Forest Model) Analysis
+Below is the classfication report: 
+<img src = "improve_model_images/random_forest_classification_report.png">
+
+Below is the test and train accuracy:
+```
+Test Accuracy: 82.95964%
+Train Accuracy: 83.40048%
+```
+
+#### Ensemble Model
+Below is the classfication report and heatmap:
+<img src = "improve_model_images/classification_report_ensemble_model.png">
+<img src = "improve_model_images/nn3_confusion_matrix.png">
+
+Below is the test and train accuracy:
+```
+Ensemble training accuracy: 0.77784
+Ensemble test accuracy: 0.77088
+```
 
 Note: Just reporting the results will be good enough. I think the analysis is supposed to be done in the Discussion section.
 
