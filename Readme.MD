@@ -1,4 +1,14 @@
 # Online News Popularity Predictor
+
+
+## Link to Jupyter Notebook
+* [Data Exploration]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb') 
+* [Data preprocessing and ML models]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb')
+* [Improved ML Model]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Improved%20ML%20model.ipynb')
+
+
+
+
 ## Dataset
 * __Filename:__ [OnlineNewsPopularity.csv](OnlineNewsPopularity.csv)
 * __Source:__ [Kaggle](https://www.kaggle.com/datasets/thehapyone/uci-online-news-popularity-data-set)
@@ -1905,5 +1915,3 @@ While the models have shown significant improvements compared to the original ve
 ## Contributions
 <!-- Things need to be added here -->
 
-## Link to Jupyter Notebook
-[Jupyter Notebook](https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb)
