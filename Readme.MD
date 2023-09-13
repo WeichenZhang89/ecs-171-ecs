@@ -813,7 +813,7 @@ plt.show()
 
 ### Improved model
 
-### Set X and y
+#### Set X and y
 #### Select all columns except 'quality', 'url', 'timedelta', 'shares' 
 #### Target column is 'quality'
 ```
