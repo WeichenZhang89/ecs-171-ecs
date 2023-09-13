@@ -1236,7 +1236,6 @@ The model complexity of our ensemble model can be defined by the complexity of t
 
 Note: During testing, we found that the SVM model did not perform well (around 40% accuracy). We excluded the SVM model from our list of models because it was inaccurate and also took a very long time to train.
 
-
 ### Discussion for Original MODEL
 #### Preprocessing and Visualizing the Input Data
 We use the 'MinMaxScaler' to normalize our dataset, ensuring that all features have the same scale. After scaling, we split our data into training and testing sets, retaining 20% for testing. We then check the range of our scaled training data to ensure consistency. Finally, we visualize the distribution of our scaled training data using histograms for each column to gain insights into its distribution:
