@@ -2,9 +2,9 @@
 
 
 ## Link to Jupyter Notebook
-* [Data Exploration]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Exploration.ipynb') 
-* [Data preprocessing and ML models]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Data%20Preprocessing%20%26%20ML%20model.ipynb')
-* [Improved ML Model]('https://github.com/WeichenZhang89/ecs-171-ecs/blob/main/Improved%20ML%20model.ipynb')
+* [Data Exploration]('Data Exploration.ipynb') 
+* [Data preprocessing and ML models]('Data Preprocessing & ML model.ipynb')
+* [Improved ML Model]('Improved ML model.ipynb')
 
 
 
