@@ -1222,7 +1222,6 @@ Ensemble training accuracy: 0.77784
 Ensemble test accuracy: 0.77088
 ```
 
-Note: Just reporting the results will be good enough. I think the analysis is supposed to be done in the Discussion section.
 
 
 ## Discussion
