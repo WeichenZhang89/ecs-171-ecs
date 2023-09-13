@@ -1547,22 +1547,23 @@ Note: During testing, we found that the SVM model did not perform well (around 4
 
 ### Discussion for Original MODEL
 #### Preprocessing and Visualizing the Input Data
-We use the 'MinMaxScaler' to normalize our dataset, ensuring that all features have the same scale. After scaling, we split our data into training and testing sets, retaining 20% for testing. We then check the range of our scaled training data to ensure consistency. Finally, we visualize the distribution of our scaled training data using histograms for each column to gain insights into its distribution:
+Before we do the 'MinMaxScaler' to normalize our dataset, we check the normality of the data distribution using Kolmogorov-Smirnov Test. Since the p value of the dataset is less than 0.5, so we confirm that the dataset is NOT normally distributed. Then, we use the 'MinMaxScaler' to normalize our dataset, ensuring that all features have the same scale. After scaling, we split our data into training and testing sets, retaining 20% for testing. 
 ```
+from scipy.stats import kstest
+
+for col in x.columns:
+    test = kstest((x[col] - x[col].mean())/ (x[col].std()), 'norm')
+
+if (test.pvalue < 0.05):
+    print("The column data from X is not normally distributed, so we can only use the minmaxScaler() method.")
+else:
+    print("The column data from X is not normally distributed, so we cannot use the standarization method.")
+
 scaler = MinMaxScaler()
 scaled_X = scaler.fit_transform(x)
 
 xTrain, xTest, yTrain, yTest = train_test_split(scaled_X, y, test_size=0.2, random_state=10)
 
-print("range of the xTrain:")
-print(xTrain.max() - xTrain.min())
-
-scale_xTrain = pd.DataFrame(xTrain)
-scale_xTest = pd.DataFrame(xTest)
-for i in scale_xTrain.columns:
-    plt.hist(xTrain[i])
-plt.title("Histogram of scale_xTrain")
-plt.show()
 ```
 
 #### Setting Up the Nerual Networks and Random Forest Components
