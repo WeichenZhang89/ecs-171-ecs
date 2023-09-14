@@ -2174,7 +2174,7 @@ While the models have shown significant improvements compared to the original ve
 
 ## Contributions
 Jun Min Kim:
-Writer of Introduction, Methods (preprocessing), Results (preprocessing), Discussion (preprocessing), worked on the original ensemble model.
+Writer of Introduction, Methods (preprocessing), Results (preprocessing), Discussion (preprocessing), worked on the original ensemble model, Group coordinator.
 
 Pinhao(Lucian) Hong:
 Coded for the construction, evaluation, modification, and data visualization parts (Non-Kfold) of the original model; Collected the resulting data and graphs for the original model in Results; Provided an explanation of the effects and purposes of the codes in the original model, and analyzed & interpreted the obtained data for evaluating the original model in Discussion.
