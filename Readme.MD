@@ -2149,7 +2149,7 @@ Model 3: Ensemble of 2 Neural Network Models + 1 Random Forest Model
 * Training Accuracy: 85.30% 
 * Testing Accuracy: 45.61%
 
- Given the fact that Random Forest Model is more capable of handling complex underlying relationships and more suitable for ensemble tasks by its inherent property. In this model, we replace linear regression with a random forest model for higher accuracy. After evaluation, despite an increase in training accuracy, there is a huge disparity between training and testing accuracy for Random forest models while NN models maintain similar evaluation results. The overall disparity in accuracy demonstrates clear overfitting so instead of changing the structure of the ensemble model, will optimize it in the improved model. 
+ Given the fact that Random Forest Model is more capable of handling complex underlying relationships and more suitable for ensemble tasks by its inherent property. In this model, we replace linear regression with a random forest model for higher accuracy. After evaluation, despite an increase in training accuracy, there is a huge disparity between training and testing accuracy for Random forest models while NN models maintain similar evaluation results. The overall disparity in accuracy demonstrates clear overfitting so instead of changing the structure of the ensemble model, we optimize it in the improved model. 
 
 #### Improved Model
 
@@ -2186,3 +2186,6 @@ scatter plot, # of data missing, columns descriptions in data exploration. Isola
 
 Szu Jay Ma:
 Coded data description & data distribution in milestone 1. Coded stratified kfold for training individual models and subsequent evaluations of ensemble models in milestone 2. Wrote Methods (Data exploration) + Discussion (Data exploration) in milestone 3.
+
+Rujia Zhou:
+Coded part of data preprocessing, Wrote Conclusion in milestone 3
